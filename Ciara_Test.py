@@ -6,6 +6,7 @@ from Scale import Scale
 def fprintf(stream, format_spec, *args):
     stream.write(format_spec % args)
 
+
 con = ConductivityProbe(9600)
 con.whosmans()
 con.helpme()

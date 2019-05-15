@@ -1,7 +1,7 @@
-
+import serial
 
 class TemperatureProbes:
-    import serial
+
     def __init__(self, baud):
         self.port = str(input('What is the port name?   '))
         self.baud = baud
