@@ -1,6 +1,9 @@
-import pyserial
+import serial
 
 class TemperatureProbes:
+    def fprintf(stream, format_spec, *args):
+        stream.write(format_spec % args)
+        
     def __init__(self, n, baud):
         self.baud = baud
         if (n==0):
@@ -17,8 +20,8 @@ class TemperatureProbes:
         
      #Prints Port name and Baud rate, in case you forgot
     def whosmans(self):
-        print("Port name is " + self.port)
-        print("Baud Rate is " + str(self.baud))
+        print("T Port name is " + self.port)
+        print("T Baud Rate is " + str(self.baud))
 
     #Prints method names and description
     def helpme(self):
@@ -49,15 +52,18 @@ class TemperatureProbes:
 
     #opens serial port for conductivity probe
     def openC(self):
-        fprintf("Trying %s.\n", self.port)
-        ser = serial.Serial(self.port, self.baud)
-        fprintf("Connected to %s.\n", self.port)
-        print("Closing...just in case")
-        ser.close()
-        print("Opening again")
-        ser.open()
-        print("yeet")
-        
+        #print("Trying " + self.port)
+        self.ser = serial.Serial(self.port, self.baud)
+        #print("Closing...just in case")
+        self.ser.close()
+        #print("Opening again")
+        print("Temp. Probes are connected to " + self.port)
+        self.ser.open()
+        #print("yeet")
+        l = self.ser.readline().strip().decode('utf-8')        
     def line(self):
-        line = ser.readline().strip().decode('utf-8')
+        return self.ser.readline().strip().decode('utf-8')
+
+
+
         

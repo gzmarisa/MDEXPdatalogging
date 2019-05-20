@@ -1,6 +1,9 @@
-import pyserial
+import serial
 
 class ConductivityProbe:
+    def fprintf(stream, format_spec, *args):
+        stream.write(format_spec % args)
+    
     def __init__(self, n, baud):
         self.baud = baud
         if (n==0):
@@ -14,11 +17,12 @@ class ConductivityProbe:
         else:
             print("Invalid ending")
             exit
+        
 
      #Prints Port name and Baud rate, in case you forgot
     def whosmans(self):
-        print("Port name is " + self.port)
-        print("Baud Rate is " + str(self.baud))
+        print("C Port name is " + self.port)
+        print("C Baud Rate is " + str(self.baud))
 
     #Prints method names and description
     def helpme(self):
@@ -49,15 +53,16 @@ class ConductivityProbe:
 
     #opens serial port for conductivity probe
     def openC(self):
-        fprintf("Trying %s.\n", self.port)
-        ser = serial.Serial(self.port, self.baud)
-        fprintf("Connected to %s.\n", self.port)
-        print("Closing...just in case")
-        ser.close()
-        print("Opening again")
-        ser.open()
-        print("yeet")
-        
+        #print("Trying " + self.port)
+        self.ser = serial.Serial(self.port, self.baud)
+        #print("Closing...just in case")
+        self.ser.close()
+        #print("Opening again")
+        self.ser.open()
+        #print("yeet")
+        print("Conductivity Probe is connected to " + self.port)
+        l = self.ser.readline().strip().decode('utf-8')
+       
     def line(self):
-        line = ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
+       return self.ser.readline().strip().decode('utf-8')
         
