@@ -56,7 +56,11 @@ class ConductivityProbe:
     def openC(self):
         print("Trying " + self.port + " at " + str(self.baud) + " baud")
         try:
-            self.ser = serial.Serial(self.port, self.baud)
+            self.ser = serial.Serial(
+                port=self.port,
+                baudrate=self.baud,
+                timeout=0.5
+            )
         except:
             print("couldn't create serial port")
             pass
@@ -71,7 +75,7 @@ class ConductivityProbe:
         print(l)
         
     def line(self):
-        while self.ser.in_waiting:
+        while not(self.ser.in_waiting):
             pass
             
         return self.ser.readline().strip().decode('utf-8')

@@ -1,3 +1,4 @@
+#! /bin/python3
 import sys
 import time as t
 import datetime
@@ -10,7 +11,7 @@ def fprintf(stream, format_spec, *args):
 
 #def main():
     
-con = ConductivityProbe(1, 9600)
+con = ConductivityProbe(0, 9600)
 #Testing methods
 #con.whosmans()
 #con.helpme()
@@ -21,7 +22,7 @@ con.openC()
 #l = con.line()
 #+-print(l)
 
-T = TemperatureProbes(0, 115200)
+T = TemperatureProbes(1, 115200)
 #Testing methods
 #T.whosmans()
 #T.helpme()
@@ -86,7 +87,7 @@ while (True):
     wt.append(S.line())
     temp.append(T.line())
     #print(second)
-    if (second[i] < 5):     #| (second[i]>55)
+    if (not(i%30)):     #| (second[i]>55)
         print(cond[i], wt[i], temp[i], month[i], day[i], hour[i], minute[i], second[i], sep='\t')
         #print(type(cond[i]))
         #print(type(wt[i]))
@@ -103,8 +104,9 @@ while (True):
     #elif (wt[i] == 1000):
     #    break
    # else:
-    t.sleep(.01)
-    i = i +1 
+    #t.sleep(0.01)
+    i = i +1
+    print("i is now " + str(i) + " time is " + str(c))
     #print("Still kickin")
 
 
