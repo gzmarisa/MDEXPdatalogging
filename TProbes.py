@@ -50,24 +50,27 @@ class TemperatureProbes:
     def changeB(self, Nbaud):
         self.baud = Nbaud
 
-    #opens serial port for conductivity probe
+    #opens serial port for Temperature Probes
     def openC(self):
-        print("Trying " + self.port)
-        self.ser = serial.Serial(self.port, self.baud)
-        if(self.ser.isOpen() == False):
-            self.ser.open()
-            print("yeet")
-        else:
-            print("Closing port")
-            self.ser.close()
-            print("Opening again")
-            self.ser.open()
-            print("Temp. Probes are connected to " + self.port)
-        l = self.ser.readline().strip().decode('utf-8')
+        print("Trying " + self.port + " at " + str(self.baud) + " baud")
+        try:
+            self.ser = serial.Serial(
+                port=self.port,
+                baudrate=self.baud,
+                timeout=0.5
+            )
+        except:
+            print("couldn't create serial port")
+            pass
+        print("Closing...just in case")
+        self.ser.close()
+        print("Opening again")
+        self.ser.open()
+        print("yeet")
+        print("Conductivity Probe is connected to " + self.port)
+        l = self.ser.readline().strip().split('\t').decode('utf-8')
+        print("Successfully read a line from the serial port")
+        print(l)
         
     def line(self):
-        return self.ser.readline().strip().decode('utf-8')
-
-
-
-        
+        return self.ser.readline().strip().split('\t').decode('utf-8')

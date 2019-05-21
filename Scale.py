@@ -56,15 +56,25 @@ class Scale:
 
     #opens serial port for conductivity probe
     def openC(self):
-        #print("Trying " + self.port)
-        self.ser = serial.Serial(self.port, self.baud)
-        #print("Closing...just in case")
+        print("Trying " + self.port + " at " + str(self.baud) + " baud")
+        try:
+            self.ser = serial.Serial(
+                port=self.port,
+                baudrate=self.baud,
+                timeout=0.5
+            )
+        except:
+            print("couldn't create serial port")
+            pass
+        print("Closing...just in case")
         self.ser.close()
-        #print("Opening again")
+        print("Opening again")
         self.ser.open()
-        print("Scale is connected to " + self.port)
         print("yeet")
+        print("Conductivity Probe is connected to " + self.port)
         l = self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
+        print("Successfully read a line from the serial port")
+        print(l)
 
     def line(self):
         return self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
