@@ -61,15 +61,18 @@ print("Cond", "Weight","HotIn", "HotOut", "ColdIn","ColdOut","Month","Day","Hour
 
 #main()
 #initialize arrays
-month = []
-day = []
-hour = []
-minute = []
-second = []
-cond = []
-wt = []
-temp = []
+
+interval=60
+month = [None] * interval
+day = [None] * interval
+hour = [None] * interval
+minute = [None] * interval
+second = [None] * interval
+cond = [None] * interval
+wt = [None] * interval
+temp = [None] * interval
 i = 0
+
          
 while (True):
     print("I'm alive, I swear. Just don't ask me to complete a CAPTCHA")
@@ -78,23 +81,31 @@ while (True):
     c = datetime.datetime.now()
     #year = d.year
     #Save date, time, conductivity, weight and temp outputs to arrays
-    month.append(d.month)
-    day.append(d.day)
-    hour.append(c.hour)
-    minute.append(c.minute)
-    second.append(c.second)
-    cond.append(con.line())
-    wt.append(S.line())
-    temp.append(T.line())
+    month[i]=d.month
+    day[i]=d.day
+    hour[i]=c.hour
+    minute[i]=c.minute
+    second[i]=c.second
+    cond[i]=float(con.line())
+    wt[i]=float(S.line())
+    temp[i]=T.line()
     #print(second)
-    if (not(i%30)):     #| (second[i]>55)
+    if (i>=(interval-1)):     #| (second[i]>55)
         print(cond[i], wt[i], temp[i], month[i], day[i], hour[i], minute[i], second[i], sep='\t')
+        if(i>0):
+            averageCond = sum(cond) / float(len(cond))
+            averageWT = sum(wt) / float(len(wt))
+            #averageTemp = sum(float(temp)) / float(len(temp))
+            print("Average Conductivity",averageCond, "Average Weight",averageWT, sep='\t')
+        
+
+
         #print(type(cond[i]))
         #print(type(wt[i]))
         #print(type(temp[i]))
         #print(type(month[i]))
         f=open(filename, "a+")
-        f.write(cond[i]  + "\t" + wt[i] + "\t" + temp[i] + "\t" + str(month[i]) + "\t" + str(day[i]) + "\t" + str(hour[i]) + "\t" + str(minute[i]) + "\t" + str(second[i]) + "\n")
+        f.write(str(cond[i])  + "\t" + str(wt[i]) + "\t" + temp[i] + "\t" + str(month[i]) + "\t" + str(day[i]) + "\t" + str(hour[i]) + "\t" + str(minute[i]) + "\t" + str(second[i]) + "\n")
         f.close() 
         
     else:
@@ -105,7 +116,10 @@ while (True):
     #    break
    # else:
     #t.sleep(0.01)
+    #print("Test: ",cond[i], wt[i], temp[i], month[i], day[i], hour[i], minute[i], second[i], sep='\t')
     i = i +1
+    if(i>=interval):
+        i=0
     print("i is now " + str(i) + " time is " + str(c))
     #print("Still kickin")
 
