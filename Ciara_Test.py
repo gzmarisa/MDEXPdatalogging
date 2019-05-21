@@ -10,7 +10,7 @@ def fprintf(stream, format_spec, *args):
 
 #def main():
     
-con = ConductivityProbe(0, 115200)
+con = ConductivityProbe(1, 9600)
 #Testing methods
 #con.whosmans()
 #con.helpme()
@@ -21,7 +21,7 @@ con.openC()
 #l = con.line()
 #+-print(l)
 
-T = TemperatureProbes(1, 115200)
+T = TemperatureProbes(0, 115200)
 #Testing methods
 #T.whosmans()
 #T.helpme()
@@ -32,7 +32,7 @@ T.openC()
 #l = T.line()
 #print(l)
 
-S = Scale("f", 19200)
+S = Scale(0, 19200)
 #Testing methods
 #S.whosmans()
 #S.helpme()
@@ -71,7 +71,7 @@ temp = []
 i = 0
          
 while (True):
-    #print("I'm alive, I swear. Just don't ask me to complete a CAPTCHA")
+    print("I'm alive, I swear. Just don't ask me to complete a CAPTCHA")
     #Get current date and time
     d = datetime.date.today()
     c = datetime.datetime.now()
@@ -103,7 +103,7 @@ while (True):
     #elif (wt[i] == 1000):
     #    break
    # else:
-    t.sleep(1)
+    t.sleep(.01)
     i = i +1 
     #print("Still kickin")
 

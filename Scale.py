@@ -6,21 +6,21 @@ class Scale:
     def __init__(self, n, baud):
         self.baud = baud
         #This will only work on this code
-        if (isinstance(n,int) == True):
-            self.port = "/dev/ttyUSB" + str(n)
+##        if (isinstance(n,int) == True):
+##            self.port = "/dev/ttyUSB" + str(n)
+##        else:
+##            raise Exception('Invalid serial port ending: must be 1 or 2 digit integer')
+        if (n==0):
+            self.port = "/dev/ttyUSB0"
+        elif (n==1):
+            self.port = "/dev/ttyUSB1"
+        elif (n==2):
+            self.port = "/dev/ttyUSB2"
+        elif (n==3):
+            self.port = "/dev/ttyUSB3"
         else:
-            raise Exception('Invalid serial port ending: must be 1 or 2 digit integer')
-        #if (n==0):
-        #    self.port = "/dev/ttyUSB0"
-        #elif (n==1):
-        #    self.port = "/dev/ttyUSB1"
-        #elif (n==2):
-        #    self.port = "/dev/ttyUSB2"
-        #elif (n==3):
-        #    self.port = "/dev/ttyUSB3"
-        #else:
-        #    print("Invalid ending")
-        #    exit
+            print("Invalid ending")
+            exit
 
     #Prints Port name and Baud rate, in case you forgot
     def whosmans(self):

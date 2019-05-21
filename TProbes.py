@@ -52,15 +52,19 @@ class TemperatureProbes:
 
     #opens serial port for conductivity probe
     def openC(self):
-        #print("Trying " + self.port)
+        print("Trying " + self.port)
         self.ser = serial.Serial(self.port, self.baud)
-        #print("Closing...just in case")
-        self.ser.close()
-        #print("Opening again")
-        print("Temp. Probes are connected to " + self.port)
-        self.ser.open()
-        #print("yeet")
-        l = self.ser.readline().strip().decode('utf-8')        
+        if(self.ser.isOpen() == False):
+            self.ser.open()
+            print("yeet")
+        else:
+            print("Closing port")
+            self.ser.close()
+            print("Opening again")
+            self.ser.open()
+            print("Temp. Probes are connected to " + self.port)
+        l = self.ser.readline().strip().decode('utf-8')
+        
     def line(self):
         return self.ser.readline().strip().decode('utf-8')
 
