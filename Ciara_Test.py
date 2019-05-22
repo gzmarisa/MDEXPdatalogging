@@ -126,6 +126,3 @@ while (True):
         i=0
     print("i is now " + str(i) + " time is " + str(c))
     #print("Still kickin")
-
-
-

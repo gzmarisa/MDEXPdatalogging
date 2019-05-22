@@ -68,9 +68,9 @@ class TemperatureProbes:
         self.ser.open()
         print("yeet")
         print("Conductivity Probe is connected to " + self.port)
-        l = self.ser.readline().strip().split('\t').decode('utf-8')
+        l = self.ser.readline().strip().decode('utf-8')
         print("Successfully read a line from the serial port")
         print(l)
         
     def line(self):
-        return self.ser.readline().strip().split('\t').decode('utf-8')
+        return self.ser.readline().strip().decode('utf-8')
