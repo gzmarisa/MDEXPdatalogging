@@ -15,24 +15,22 @@ dN = isnan(data.data);
 
 for i = 1:rows
     for j = 1:cols
-        if dN(i,2) == 1                                                     
+        if dN(i,j) == 1                                                     
+            data.data(i,:) = [];
+            dN(i,:) = [];
+            rows = rows-1;
+            i=i+1
+        elseif dN(i,2)== 1
             data.data(i,:) = [];
             data.data(i-1,:) = [];
             dN(i,:) = [];
             dN(i-1,:) = [];
             rows = rows-2;
-            
-        elseif dN(i,j)== 1
-            data.data(i,:) = [];           
-            dN(i,:) = [];          
-            rows = rows-1;
-            
-        end
-       
+            i=i+1
+        end 
+i=
     end 
-    if i>=rows 
-        break
-    end
+    
 end
 disp("I'm done")
 
