@@ -11,7 +11,6 @@ data = importdata(file,delimiter,headerlines);
 [rows, cols] = size(data.data);
 %Delete rows that are not complete
 dN = isnan(data.data);
-<<<<<<< HEAD
 for i = 1:rows
     for j = 1:cols
         if dN(i,j) == 1                                                     
@@ -19,28 +18,17 @@ for i = 1:rows
             dN(i,:) = [];
             rows = rows-1;
         elseif dN(i,2)== 1
-=======
-
-for i = 1:rows 
-    for j = 1:cols 
-        if dN(i,2) == 1                                                     
->>>>>>> b75b115ad6a5562731fb416cb0baadafebc98d94
             data.data(i,:) = [];
             data.data(i-1,:) = [];
             dN(i,:) = [];
             dN(i-1,:) = [];
             rows = rows-2;
-        elseif dN(i,j)== 1
-            data.data(i,:) = [];
-            dN(i,:) = [];
-            rows = rows-1;
         end 
-        disp(i)
-        disp(j)
+
     end 
     
 end
-disp('im done')
+disp("I'm done")
 
 
 cond = data.data(:, 1);  wt = data.data(:, 2);    
