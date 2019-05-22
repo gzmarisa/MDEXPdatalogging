@@ -51,14 +51,21 @@ S.openC()
     #print("can you wait?")
         
 #print(t.localtime(None))
-print("Still kickin")
+#print("Still kickin")
+
+
+printInterval = input("What interval (in minutes) would you like the data to be printed?")
+
+
+
+saveInterval = input("What interval (in minutes) would you like the data to be saved to a text file?")
+
 filename = str(input("What would you like the file name to be?"))
 f = open(filename, "w+")
 f.write("Cond\tWeight\tHotIn\tHotOut\tColdIn\tColdOut\tMonth\tDay\tHour\tMinute\tSecond\n")
 f.close() 
 
 print("Cond", "Weight","HotIn", "HotOut", "ColdIn","ColdOut","Month","Day","Hour","Minute","Second",sep='\t')
-
 #main()
 #initialize arrays
 
@@ -90,16 +97,14 @@ while (True):
     wt[i]=float(S.line())
     temp[i]=T.line()
     #print(second)
-    if (i>=(interval-1)):     #| (second[i]>55)
+    if (i>=(interval-1)):
         print(cond[i], wt[i], temp[i], month[i], day[i], hour[i], minute[i], second[i], sep='\t')
         if(i>0):
             averageCond = sum(cond) / float(len(cond))
+            #For average wt.
             averageWT = sum(wt) / float(len(wt))
             #averageTemp = sum(float(temp)) / float(len(temp))
             print("Average Conductivity",averageCond, "Average Weight",averageWT, sep='\t')
-        
-
-
         #print(type(cond[i]))
         #print(type(wt[i]))
         #print(type(temp[i]))
@@ -107,7 +112,6 @@ while (True):
         f=open(filename, "a+")
         f.write(str(cond[i])  + "\t" + str(wt[i]) + "\t" + temp[i] + "\t" + str(month[i]) + "\t" + str(day[i]) + "\t" + str(hour[i]) + "\t" + str(minute[i]) + "\t" + str(second[i]) + "\n")
         f.close() 
-        
     else:
         m = second[i] % 30
     #if (hour[i] == 16) & (minute[i] == 0):
