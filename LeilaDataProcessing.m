@@ -4,29 +4,29 @@ clear, clc
 %Modified By: 
 
 %Importing data from EXCEL
-filename = input('What file would you like to import? Include ".txt"(macs)  ', 's');      %to get filename to import
-delimiterIn= '\t';
-headerlinesIn= 1;
-data = importdata(filename,delimiterIn,headerlinesIn);
+file = input('What file would you like to import? Include ".txt"(macs)  ', 's');      %to get filename to import
+delimiter= '\t';
+headerlines= 1;
+data = importdata(file,delimiter,headerlines);
 [rows, cols] = size(data.data);
-
 %Delete rows that are not complete
 dN = isnan(data.data);
 
-for i = 1:rows
-    for j = 1:cols
-        if dN(i,j) == 1                                                     
-            data.data(i,:) = [];
-            dN(i,:) = [];
-            rows = rows-1;
-        elseif dN(i,2)== 1
+for i = 1:rows 
+    for j = 1:cols 
+        if dN(i,2) == 1                                                     
             data.data(i,:) = [];
             data.data(i-1,:) = [];
             dN(i,:) = [];
             dN(i-1,:) = [];
             rows = rows-2;
+        elseif dN(i,j)== 1
+            data.data(i,:) = [];
+            dN(i,:) = [];
+            rows = rows-1;
         end 
-
+        disp(i)
+        disp(j)
     end 
     
 end
