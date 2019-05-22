@@ -12,7 +12,6 @@ data = importdata(filename,delimiterIn,headerlinesIn);
 
 %Delete rows that are not complete
 dN = isnan(data.data);
-
 for i = 1:rows
     for j = 1:cols
         if dN(i,j) == 1                                                     
