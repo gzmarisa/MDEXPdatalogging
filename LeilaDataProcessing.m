@@ -4,27 +4,42 @@ clear, clc
 %Modified By: 
 
 %Importing data from EXCEL
-filename = input('What file would you like to import? Include ".txt"(macs)  ', 's');      %to get filename to inport
-data = readmatrix(filename);
-[rows, cols] = size(data);
-cond = data(:, 1);  wt = data(:, 2);    
-T1 = data(:, 3);    T2 = data(:, 4);    T3 = data(:, 5);    T4 = data(:, 6);
-mon = data(:, 7);     day = data(:, 8); hour = data(:,9);   min = data(:,10);   sec = data(:,11); Y = 2019*ones(rows,1);
+filename = input('What file would you like to import? Include ".txt"(macs)  ', 's');      %to get filename to import
+delimiterIn= '\t';
+headerlinesIn= 1;
+data = importdata(filename,delimiterIn,headerlinesIn);
+[rows, cols] = size(data.data);
+
+%Delete rows that are not complete
+dN = isnan(data.data);
+
+for i = 1:rows
+    for j = 1:cols
+        if dN(i,j) == 1                                                     
+            data.data(i,:) = [];
+            dN(i,:) = [];
+            rows = rows-1;
+        elseif dN(i,2)== 1
+            data.data(i,:) = [];
+            data.data(i-1,:) = [];
+            dN(i,:) = [];
+            dN(i-1,:) = [];
+            rows = rows-2;
+        end 
+
+    end 
+    
+end
+disp('im done')
+
+
+cond = data.data(:, 1);  wt = data.data(:, 2);    
+T1 = data.data(:, 3);    T2 = data.data(:, 4);    T3 = data.data(:, 5);    T4 = data.data(:, 6);
+mon = data.data(:, 7);   day = data.data(:, 8);   hour = data.data(:,9);   min = data.data(:,10);   sec = data.data(:,11); Y = 2019*ones(rows,1,'int16');
+mon= uint16(mon); day= uint16(day); hour= uint16(hour); min=uint16(min); sec=uint16(sec); 
 inW = input('What is the initial weight of the tank (L)?    ');                %to get initial weight of tank
 date = datetime(Y, mon, day, hour, min, sec);
 
-%Delete rows that are not complete
-dwgN = isnan(wt);
-dcuN = isnan(cond);
-for i = 1:rows
-    for j = 1:cols
-        if (dwgN(i,j) == 1) || (dcuN(i,j) == 1)                                                      
-            wt(i,:) = [];                                             
-            cond(i,:) = [];
-            rows = rows-1;
-        end
-    end
-end
 
 %Initialize other variables
 DistillateVol = wt/1000;                            %Convert distillate weight in liters
