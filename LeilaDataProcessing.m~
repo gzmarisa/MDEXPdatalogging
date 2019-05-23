@@ -88,7 +88,8 @@ for i = 1:length(wt)                              %Initialize for loop.
     %If i = 0, everything is 0, but we already allocated arrays of zeroes, so nothing happens
     if i ~= 1
         %Get difference in time in minutes and hours
-        g = date(i,1) - date(i-1,1);                  %Subtract time before it from current time
+        g = timeE(i,1) - timeE(i-1,1);                  %Subtract time before it from current time
+        g = datetime(g, 'ConvertFrom', 'excel');        %Convert to actual time, from decimal
         g = minute(g);                                  %Get minutes from time above
         deltat_min(i, 1) = g;                                  %Set array at that point to minutes between the two times
         deltat_hrs(i,1) = deltat_min(i,1)/60;                        %Convert to hours
