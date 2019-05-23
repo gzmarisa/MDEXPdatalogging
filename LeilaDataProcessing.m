@@ -10,10 +10,10 @@ headerlines= 1;
 data = importdata(file,delimiter,headerlines);
 [rows, cols] = size(data.data);
 
-%Delete rows that are not complete
+%Delete rows that are not complete and gits ;) rid of Negative weight values 
 dN = isnan(data.data);
 
-for i = 1:rows
+for i = 1:rows-1
     for j = 1:cols
         if dN(i,2) == 1                                                     
             data.data(i,:) = [];
@@ -22,7 +22,7 @@ for i = 1:rows
             dN(i-1,:) = [];
             rows = rows-2;
             
-        elseif dN(i,j)== 1
+        elseif dN(i,j)== 1 || data.data(i,2) < 0
             data.data(i,:) = [];           
             dN(i,:) = [];          
             rows = rows-1;
@@ -34,26 +34,49 @@ for i = 1:rows
         break
     end
 end
-disp("I'm done")
+
+
 
 
 cond = data.data(:, 1);  wt = data.data(:, 2);    
 T1 = data.data(:, 3);    T2 = data.data(:, 4);    T3 = data.data(:, 5);    T4 = data.data(:, 6);
 mon = data.data(:, 7);   day = data.data(:, 8);   hour = data.data(:,9);   min = data.data(:,10);   sec = data.data(:,11); Y = 2019*ones(rows,1,'int16');
 mon= uint16(mon); day= uint16(day); hour= uint16(hour); min=uint16(min); sec=uint16(sec); 
-inW = input('What is the initial weight of the tank (L)?    ');                %to get initial weight of tank
+inW = input('What is the initial volume of the tank (L)?    ');                %to get initial volume of tank
 date = datetime(Y, mon, day, hour, min, sec);
 
+% Adds weights to previous value if previous is larger 
+
+diff= 0;
+wt(1+rows)= [0];
+for i = 1:rows
+    
+    wt(i)=wt(i)+diff;
+    
+    
+    if (wt(i+1)+ diff) - wt(i) < 0  
+        diff = diff + wt(i);
+      
+     %i=i+1;
+    end
+  
+     if i>=rows 
+        wt(1+rows)=[];
+        break
+    end
+ 
+end
 
 %Initialize other variables
-DistillateVol = wt/1000;                            %Convert distillate weight in liters
+DistillateWeight_L = wt/1000;                            %Convert distillate weight in liters
 a = 0.039;                                          %Area of small cell, m^2
-timeI = date(1,1);                              %Get initial time
+timeI = date(1,1); %Get initial time
 deltat_min = zeros(rows, 1);                        %Pre-allocating arrays to columns of
 deltat_hrs = zeros(rows, 1);                        %zeroes of the length of the
 TimeElapsed_hrs = zeros(rows, 1);                   %number of data points given.
 WaterFlux = zeros(rows, 1);  
 RecoveryPercent = zeros(rows, 1); 
+
 
 interval = input('How many minutes do you want between each data point?   ');
 
