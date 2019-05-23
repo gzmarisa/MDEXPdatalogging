@@ -44,85 +44,117 @@ S.openC()
 #l = S.line()
 #print(l)
 
-#loop for making the code start when seconds = 0
-#time = t.localtime(None).tm_sec
-#while(time != 0):
-#    time = t.localtime(None).tm_sec
-    #print("can you wait?")
-        
-#print(t.localtime(None))
-#print("Still kickin")
+printInterval = int(input("What interval (in minutes) would you like the data to be printed?"))
+print(type(printInterval))
 
 
-printInterval = input("What interval (in minutes) would you like the data to be printed?")
-
-
-
-saveInterval = input("What interval (in minutes) would you like the data to be saved to a text file?")
+saveInterval = int(input("What interval (in minutes) would you like the data to be saved to a text file?"))
 
 filename = str(input("What would you like the file name to be?"))
 f = open(filename, "w+")
+print("Opened file")
 f.write("Cond\tWeight\tHotIn\tHotOut\tColdIn\tColdOut\tMonth\tDay\tHour\tMinute\tSecond\n")
-f.close() 
+print("saved first line to file")
+f.close()
+print("Closed file")
+
+month = []
+day = []
+hour = []
+minute = []
+second = []
+cond = []
+wt = []
+temp = []
+i = 0
+m = 0;
+time = ("Waiting for seconds to equal 0")
+time = t.localtime(None).tm_sec
+    #loop for making the code start when seconds = 0
+while(time != 0):
+    #print("Waiting for seconds to equal 0")
+    time = t.localtime(None).tm_sec            
+    #print(t.localtime(None))
+    #print("Still kickin")
+
 
 print("Cond", "Weight","HotIn", "HotOut", "ColdIn","ColdOut","Month","Day","Hour","Minute","Second",sep='\t')
-#main()
-#initialize arrays
-
-interval=60
-month = [None] * interval
-day = [None] * interval
-hour = [None] * interval
-minute = [None] * interval
-second = [None] * interval
-cond = [None] * interval
-wt = [None] * interval
-temp = [None] * interval
-i = 0
-
-         
+    #main()
+    #initialize arrays
 while (True):
-    print("I'm alive, I swear. Just don't ask me to complete a CAPTCHA")
-    #Get current date and time
+        #print("I'm alive, I swear. Just don't ask me to complete a CAPTCHA")
+        #Get current date and time
     d = datetime.date.today()
     c = datetime.datetime.now()
-    #year = d.year
-    #Save date, time, conductivity, weight and temp outputs to arrays
-    month[i]=d.month
-    day[i]=d.day
-    hour[i]=c.hour
-    minute[i]=c.minute
-    second[i]=c.second
-    cond[i]=float(con.line())
-    wt[i]=float(S.line())
-    temp[i]=T.line()
-    #print(second)
-    if (i>=(interval-1)):
+        #year = d.year
+        #Save date, time, conductivity, weight and temp outputs to arrays
+    m = c.minute
+
+    if i == 0:
+        month.append(d.month)
+        day.append(d.day)
+        hour.append(c.hour)
+        minute.append(c.minute)
+        second.append(c.second)
+        cond.append(con.line())
+        wt.append(S.line())
+        temp.append(T.line())
+        f=open(filename, "a+")
+        f.write(str(cond[i])  + "\t" + str(wt[i]) + "\t" + temp[i] + "\t" + str(month[i]) + "\t" + str(day[i]) + "\t" + str(hour[i]) + "\t" + str(minute[i]) + "\t" + str(second[i]) + "\n")
+        f.close()
         print(cond[i], wt[i], temp[i], month[i], day[i], hour[i], minute[i], second[i], sep='\t')
-        if(i>0):
-            averageCond = sum(cond) / float(len(cond))
-            #For average wt.
-            averageWT = sum(wt) / float(len(wt))
-            #averageTemp = sum(float(temp)) / float(len(temp))
-            print("Average Conductivity",averageCond, "Average Weight",averageWT, sep='\t')
-        #print(type(cond[i]))
-        #print(type(wt[i]))
-        #print(type(temp[i]))
-        #print(type(month[i]))
+        
+    elif ((m/printInterval)==0) == True:
+        mon=d.month
+        day=d.day
+        hour=c.hour
+        minn=c.minute
+        sec=c.second
+        conn=con.line()
+        weight=S.line()
+        temps=T.line()
+        print(conn, weight, temps, minn, day, hour, minn, sec, sep='\t')
+
+    elif (m/saveInterval)==0 == True:
+        month.append(d.month)
+        day.append(d.day)
+        hour.append(c.hour)
+        minute.append(c.minute)
+        second.append(c.second)
+        cond.append(con.line())
+        wt.append(S.line())
+        temp.append(T.line())
         f=open(filename, "a+")
         f.write(str(cond[i])  + "\t" + str(wt[i]) + "\t" + temp[i] + "\t" + str(month[i]) + "\t" + str(day[i]) + "\t" + str(hour[i]) + "\t" + str(minute[i]) + "\t" + str(second[i]) + "\n")
         f.close() 
+        #print(second)
+        #if (i>=(interval-1)):
+            
+            #if(i>0):
+            #    averageCond = sum(cond) / float(len(cond))
+            #    #For average wt.
+            #    averageWT = sum(wt) / float(len(wt))
+                #averageTemp = sum(float(temp)) / float(len(temp))
+            #    print("Average Conductivity",averageCond, "Average Weight",averageWT, sep='\t')
+            #print(type(cond[i]))
+            #print(type(wt[i]))
+            #print(type(temp[i]))
+            #print(type(month[i]))
+            
     else:
-        m = second[i] % 30
-    #if (hour[i] == 16) & (minute[i] == 0):
-    #    break
-    #elif (wt[i] == 1000):
-    #    break
-   # else:
-    #t.sleep(0.01)
-    #print("Test: ",cond[i], wt[i], temp[i], month[i], day[i], hour[i], minute[i], second[i], sep='\t')
+        pass
+        t.sleep(1)
+        #if (hour[i] == 16) & (minute[i] == 0):
+        #    break
+        #elif (wt[i] == 1000):
+        #    break
+       # else:
+        
+        #print("Test: ",cond[i], wt[i], temp[i], month[i], day[i], hour[i], minute[i], second[i], sep='\t')
     i = i +1
-    if(i>=interval):
-        i=0
-    print("i is now " + str(i) + " time is " + str(c))
+        
+        #if(i>=interval):
+        #    i=0
+    #print("i is now " + str(i) + " time is " + str(c))
+    
     #print("Still kickin")
