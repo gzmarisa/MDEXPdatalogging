@@ -35,10 +35,10 @@ end
 
 condd = data.data(:, 1);  wtt = data.data(:, 2);    
 T1 = data.data(:, 3);    T2 = data.data(:, 4);    T3 = data.data(:, 5);    T4 = data.data(:, 6);
-mon = data.data(:, 7);   day = data.data(:, 8);   hour = data.data(:,9);   min = data.data(:,10);   sec = data.data(:,11); Y = 2019*ones(rows,1,'int16');
-mon= uint16(mon); day= uint16(day); hour= uint16(hour); min=uint16(min); sec=uint16(sec); 
+mon = data.data(:, 7);   day = data.data(:, 8);   hour = data.data(:,9);   minn = data.data(:,10);   sec = data.data(:,11); Y = 2019*ones(rows,1,'int16');
+mon= uint16(mon); day= uint16(day); hour= uint16(hour); minn=uint16(minn); sec=uint16(sec); 
 inW = input('What is the initial volume of the tank (L)?    ');                %to get initial volume of tank
-datee = datetime(Y, mon, day, hour, min, sec);
+datee = datetime(Y, mon, day, hour, minn, sec);
 
 % Adds weights to previous value if previous is larger 
 diff= 0;
@@ -59,6 +59,7 @@ for i = 1:length(condd)
         cond(i/interval,1) = condd(i,1);
         wt(i/interval,1) = wtt(i,1);
         date(i/interval, 1) = datee(i,1);
+        min(i/interval, 1) = minn(i,1);
         j(i/interval,1) = i;
     end
 end
@@ -68,6 +69,7 @@ if rem(length(wt), interval) ~= 0
     cond(length(cond) + 1, 1) = condd(length(condd), 1);
     wt(length(wt) + 1, 1) = wtt(length(wtt),1);
     date(length(date) + 1, 1) = date(length(date),1);
+    min(length(min) + 1, 1) = minn(length(minn),1);
 end
 rows = length(wt);
 
@@ -86,8 +88,8 @@ for i = 1:length(wt)                              %Initialize for loop.
     %If i = 0, everything is 0, but we already allocated arrays of zeroes, so nothing happens
     if i ~= 1
         %Get difference in time in minutes and hours
-        g = min(i,1) - min(i-1,1)                  %Get difference in minutes
-        deltat_min(i, 1) = g                       %Set array at that point to minutes between the two times
+        g = min(i,1) - min(i-1,1);                  %Get difference in minutes
+        deltat_min(i, 1) = g;                       %Set array at that point to minutes between the two times
         deltat_hrs(i,1) = deltat_min(i,1)/60;       %Convert to hours
         
         %Get difference in time from initial time to current in hours
@@ -118,17 +120,17 @@ siz = length(wtt);
 %Exporting data to txt file
 boo = input('Do you want to write the data to a txt file? Use "Y" or "N"   ', 's');
 if boo == "Y"
-    Time = datestr(datetime(timeE, 'ConvertFrom', 'excel'), 'HH:MM');   %Change time format from decimal to actual time
+    Time = date;  
     filen = strcat(input('What txt file would you like to save this data to? DO NOT include ".txt".   ', 's'), '.txt');    %getting filename from user
     fileID = fopen(filen,'w');              %open file
     %Below is table that will be in txt file
-    T = table(Time, TimeElapsed_hrs, wt, DistillateWeight_L,DistillateConductivity_ppm, cond, deltat_min, deltat_hrs, WaterFlux, RecoveryPercent);
+    T = table(Time, TimeElapsed_hrs, wt, DistillateWeight_L, cond, deltat_min, deltat_hrs, WaterFlux, RecoveryPercent);
     writetable(T,filen, 'Delimiter', '\t');        %write table into txt file
     fprintf(filen, 'There were %3d points removed, \n', j-1);
     for i = 1:(j-1)
        %h = datestr(datetime(rem(i,1), 'ConvertFrom', 'excel'), 'HH:MM');
        %rem(i,1) = h;
-       fprintf(filen, 'Those points are %d ', rem(i));  
+       %fprintf(filen, 'Those points are %d ', rem(i));  
     end
     fclose(fileID);             %close file
     fprintf('Note: to export txt file into EXCEL, follow these steps: \n');
@@ -159,7 +161,6 @@ if st == 'Y'
             deltat_hrs(i) = [];
             wt(i) = [];
             DistillateWeight_L(i) = []; 
-            DistillateConductivity_ppm(i) = [];
             cond(i) = [];
             WaterFlux(i) = [];
            RecoveryPercent(i) = [];
