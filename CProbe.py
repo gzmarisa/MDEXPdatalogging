@@ -1,8 +1,6 @@
 import serial
 
 class ConductivityProbe:
-    def fprintf(stream, format_spec, *args):
-        stream.write(format_spec % args)
     
     def __init__(self, n, baud):
         self.baud = baud
