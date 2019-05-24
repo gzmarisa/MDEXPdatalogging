@@ -1,0 +1,46 @@
+clear all, clc
+%Script for data processing EEM data
+%Created By: Marcos Lee
+%Modified By: 
+
+
+%Importing data from EXCEL
+file1 = input('What UV file would you like to import? Include ".txt"(macs)  ', 's');      %to get filename to import
+file2 = input('What FL file would you like to import? Include ".txt"(macs)  ', 's');      %to get filename to import
+
+UV= xlsread(file1); %Converts data into Matrix
+EEM= xlsread(file2); %Converts data into Matrix
+
+[rows1, cols1] = size(UV);
+[rows2, cols2] = size(EEM);
+
+
+for i = 1 : 3
+    EEM(i,:)=[];
+end 
+EEM(1,:)=[];
+
+AbdOD=UV(:,10); 
+UVnums=EEM(:,1);
+WVLNG=UV(:,1);
+AbdOD=flip(AbdOD); %flips order of vector
+WVLNG=flip(WVLNG); %flips order of vector 
+
+for i= 2: rows1 %should delete every wave length and abs associated with that wave length except for the one right below the needed value (Linear
+                % Interpolation) but does not HELP!!!
+                
+    if UVnums(1) > WVLNG(i)
+        WVLNG(i-1)=[];
+        AbdOD(i-1)=[];
+        disp(i)  
+        disp(WVLNG(i))
+        disp(AbdOD(i))
+    else
+        break
+    end 
+    
+end
+
+        
+        
+        
