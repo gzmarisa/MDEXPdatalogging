@@ -88,13 +88,10 @@ for i = 1:length(wt)                              %Initialize for loop.
     %If i = 0, everything is 0, but we already allocated arrays of zeroes, so nothing happens
     if i ~= 1
         %Get difference in time in minutes and hours
-        g = min(i,1) - min(i-1,1);                  %Get difference in minutes
-        deltat_min(i, 1) = g;                       %Set array at that point to minutes between the two times
+                         
+        deltat_min(i, 1) = min(i,1) - min(i-1,1);   %Get difference in minutes, Set array at that point to minutes between the two times
         deltat_hrs(i,1) = deltat_min(i,1)/60;       %Convert to hours
-        
-        %Get difference in time from initial time to current in hours
-        h = g/60;                  
-        TimeElapsed_hrs(i, 1) = h;                     %Set array at that point to hours from intial start
+   
         
         %Get water flux for each data point
            if deltat_hrs(i,1) == 0                         %If deltat_hrs is 0, flux is zero.
@@ -109,13 +106,17 @@ for i = 1:length(wt)                              %Initialize for loop.
     RecoveryPercent(i,1) = 100*(1 - ((inW - DistillateWeight_L(i,1))/inW));    %Since nothing is being subtracted from something before it or a possible 0, it doesn't need to have a condition
 end                 %End for loop
 
+for i= 2:length(wt)
+    deltat_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
+end 
+
+TimeElapsed_hrs=deltat_hrs;
+
 %FIGURE OUT HOW TO GET BACK TO EXCEL ON PC
 %l = string(length(DistillateConductivity_uS));
 %deltat_minR = strcat('D2:D', l);
 %xlswrite(filename, 'dT (min)', 'D1');
 %xlswrite(filename, deltat_min,deltat_minR);
-
-siz = length(wtt);
 
 %Exporting data to txt file
 boo = input('Do you want to write the data to a txt file? Use "Y" or "N"   ', 's');
@@ -144,7 +145,9 @@ if boo == "Y"
 end
 
 g = input('Do you want any graphs? Enter "Y" or "N"   ', 's');
-st = input('do you want outiers removed?', 's');
+st = input('Do you want outiers removed? ', 's');
+
+
 if st == 'Y'
     %remove data points < | >.7 std from average
     stddev = input('How many standard deviations from the average do you want removed?(usually 0.7 is used)   ');
@@ -152,7 +155,8 @@ if st == 'Y'
     wfA = mean(WaterFlux);
     wfS = std(WaterFlux);
     j = 1;
-    for i = siz:-1:1
+    siz = length(wtt);
+    for i = siz:-1:2
         if (WaterFlux(i) < (wfA - stddev*wfS)) || (WaterFlux(i) > (wfA - stddev*wfS))
             rem(j, 1:10) = [string(datestr(datetime(timeE(i), 'ConvertFrom', 'excel'), 'HH:MM')), TimeElapsed_hrs(i), wt(i), DistillateWeight_L(i), DistillateConductivity_ppm(i), cond(i) deltat_min(i), deltat_hrs(i), WaterFlux(i), RecoveryPercent(i)];
             timeE(i) = [];
@@ -368,3 +372,4 @@ if g == 'Y'
         grid on %adds grid to plot
     end
 end
+%}
