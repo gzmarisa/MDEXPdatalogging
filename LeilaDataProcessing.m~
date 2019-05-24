@@ -1,7 +1,7 @@
 clear, clc
 %Script for data processing and making a set of graph for Leila's MD Experiments
 %Created By: Ciara Avelina Lugo
-%Modified By: Marquitos Lee
+%Modified By: 
 
 %Importing data from EXCEL
 file = input('What file would you like to import? Include ".txt"(macs)  ', 's');      %to get filename to import
