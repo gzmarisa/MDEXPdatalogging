@@ -1,2 +1,0 @@
-Cond	Weight	HotIn	HotOut	ColdIn	ColdOut	Month	Day	Hour	Minute	Second
-0.00	0.0	40.44	36.96	33.07	35.17	5	23	16	41	0
