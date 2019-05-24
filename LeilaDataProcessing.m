@@ -153,7 +153,7 @@ if st == 'Y'
     wfS = std(WaterFlux);
     j = 1;
     for i = siz:-1:1
-        if (WaterFlux(i) < (wfA - stddev*wfS)) || (WaterFlux(i) < (wfA - stddev*wfS))
+        if (WaterFlux(i) < (wfA - stddev*wfS)) || (WaterFlux(i) > (wfA - stddev*wfS))
             rem(j, 1:10) = [string(datestr(datetime(timeE(i), 'ConvertFrom', 'excel'), 'HH:MM')), TimeElapsed_hrs(i), wt(i), DistillateWeight_L(i), DistillateConductivity_ppm(i), cond(i) deltat_min(i), deltat_hrs(i), WaterFlux(i), RecoveryPercent(i)];
             timeE(i) = [];
             TimeElapsed_hrs(i) = [];
