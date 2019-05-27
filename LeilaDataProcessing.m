@@ -83,6 +83,10 @@ TimeElapsed_hrs = zeros(rows, 1);                   %number of data points given
 WaterFlux = zeros(rows, 1);  
 RecoveryPercent = zeros(rows, 1); 
 
+for i= 2:length(wt)
+    deltat_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
+end 
+
 %main loop
 for i = 1:length(wt)                              %Initialize for loop.
     %If i = 0, everything is 0, but we already allocated arrays of zeroes, so nothing happens
@@ -97,7 +101,7 @@ for i = 1:length(wt)                              %Initialize for loop.
            if deltat_hrs(i,1) == 0                         %If deltat_hrs is 0, flux is zero.
                 WaterFlux(i,1) = 0;
            else                                     %If deltat_hrs isn't 0
-                WaterFlux(i,1) = ((DistillateWeight_L(i,1)-(DistillateWeight_L(i-1,1))))/(deltat_hrs(i,1)*a);       %subtract from one before it, bc it exists   
+                WaterFlux(i,1) = ((DistillateWeight_L(i,1)-(DistillateWeight_L(i-1,1))))/((deltat_hrs(i,1) - deltat_hrs(i-1,1))*a);       %subtract from one before it, bc it exists   
            end      %End if-else statement
            %End if-else statement
     end
@@ -106,11 +110,13 @@ for i = 1:length(wt)                              %Initialize for loop.
     RecoveryPercent(i,1) = 100*(1 - ((inW - DistillateWeight_L(i,1))/inW));    %Since nothing is being subtracted from something before it or a possible 0, it doesn't need to have a condition
 end                 %End for loop
 
-for i= 2:length(wt)
-    deltat_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
-end 
 
-TimeElapsed_hrs=deltat_hrs;
+
+
+
+for i= 2:length(wt)
+    TimeElapsed_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
+end 
 
 %FIGURE OUT HOW TO GET BACK TO EXCEL ON PC
 %l = string(length(DistillateConductivity_uS));

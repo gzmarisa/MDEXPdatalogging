@@ -26,5 +26,5 @@ void loop() {
   Serial.print(sensorValue); //print sensor value 
   Serial.println(" "); //create space
   //Serial.println(units); //print units and skip to next line
-  delay(1000); //wait full second
+  delay(1); //wait full second
 }
