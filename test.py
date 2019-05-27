@@ -29,20 +29,65 @@
 ####print(n)
 ##
 
-for i in range(1, 300):
-    m = i/60
-    #print(m)
-    #print(1%(i/60))
-    #if (1%(i/60)):
-    #    print('wooooopoiryhgnbj;erdsfg;olewjs')
-    if (1%m == 0):
-        print('git')
-        print(i)
-        print(m)
-    i = i+1
+##for i in range(1, 300):
+##    m = i/60
+##    #print(m)
+##    #print(1%(i/60))
+##    #if (1%(i/60)):
+##    #    print('wooooopoiryhgnbj;erdsfg;olewjs')
+##    if (1%m == 0):
+##        print('git')
+##        print(i)
+##        print(m)
+##    i = i+1
+##
+##if(5/1 == 0) == True:
+##    print("asdkfj")
+##m = []
+##m.append(6)
+##print(m[0])
+import sys
+import time as t
+import datetime
+from CProbe import ConductivityProbe
+from TProbes import TemperatureProbes
+from Scale import Scale
+import serial
+##con = ConductivityProbe(3, 115200)
+##con.openC()
+##T = TemperatureProbes(2, 115200)
+##T.openC()
+##S = Scale(0, 19200)
+##S.openC()
+##print("TIME\t\tConductivity\t Weight\t\tTemps")
+##i = 0
+##while(i != 600):
+##    d = datetime.date.today()
+##    c = datetime.datetime.now()
+##    print(str(c), con.line(), S.line(), T.line(), sep='\t')
+##    i = i+1
+##    #t.sleep(1)
+port = "/dev/ttyUSB0"
+baud = 9600
+ser = 0
+print("Trying " + port + " at " + str(baud) + " baud")
+ser = serial.Serial(
+    port=port,
+    baudrate=baud,
+    timeout=0.5
+)
+##except:
+##    print("couldn't create serial port")
+##    pass
+##    #print("Closing...just in case")
+ser.close()
+print("Opening again")
+ser.open()
+print("yeet")
+print("Conductivity Probe is connected to " + port)
+l = ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
+    
+while (ser.inWaiting()):  # Or: while ser.inWaiting():
+    print (ser.readline().strip().rpartition(b' g')[0].decode('utf-8'))
+    print("help")
 
-if(5/1 == 0) == True:
-    print("asdkfj")
-m = []
-m.append(6)
-print(m[0])
