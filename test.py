@@ -53,9 +53,9 @@ from CProbe import ConductivityProbe
 from TProbes import TemperatureProbes
 from Scale import Scale
 
-con = ConductivityProbe(0, 115200)
+con = ConductivityProbe(3, 115200)
 con.openC()
-T = TemperatureProbes(1, 115200)
+T = TemperatureProbes(2, 115200)
 T.openC()
 S = Scale(0, 19200)
 S.openC()
@@ -66,5 +66,6 @@ while(i != 600):
     c = datetime.datetime.now()
     print(str(c), con.line(), S.line(), T.line(), sep='\t')
     i = i+1
+    #t.sleep(1)
 
 
