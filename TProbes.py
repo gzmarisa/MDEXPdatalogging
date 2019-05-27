@@ -1,9 +1,6 @@
 import serial
 
-class TemperatureProbes:
-    def fprintf(stream, format_spec, *args):
-        stream.write(format_spec % args)
-        
+class TemperatureProbes:        
     def __init__(self, n, baud):
         self.baud = baud
         if (n==0):
@@ -62,15 +59,15 @@ class TemperatureProbes:
         except:
             print("couldn't create serial port")
             pass
-        print("Closing...just in case")
+        #print("Closing...just in case")
         self.ser.close()
-        print("Opening again")
+        #print("Opening again")
         self.ser.open()
-        print("yeet")
+        #print("yeet")
         print("Conductivity Probe is connected to " + self.port)
         l = self.ser.readline().strip().decode('utf-8')
-        print("Successfully read a line from the serial port")
-        print(l)
+        #print("Successfully read a line from the serial port")
+        #print(l)
         
     def line(self):
         return self.ser.readline().strip().decode('utf-8')

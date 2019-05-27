@@ -16,7 +16,7 @@ float intercept = 0; //create global variable for intercept
 //const char* units = "(MICS)"; //create global variable for units for conductivity sensor 
  
 void setup() {
-  Serial.begin(9600); //setup communication to display
+  Serial.begin(115200); //setup communication to display
 }
 
 void loop() {
@@ -26,5 +26,5 @@ void loop() {
   Serial.print(sensorValue); //print sensor value 
   Serial.println(" "); //create space
   //Serial.println(units); //print units and skip to next line
-  delay(100); //wait full second
+  delay(1000); //wait full second
 }
