@@ -77,4 +77,5 @@ class Scale:
         #print(l)
 
     def line(self):
+        
         return self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
