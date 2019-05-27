@@ -73,7 +73,7 @@ void loop() {
   digitalWrite(CS4, HIGH);
   Serial.println();
 
-  delay(1000);
+  delay(500);
 }  
 
 
