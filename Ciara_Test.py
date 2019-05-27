@@ -7,7 +7,7 @@ from TProbes import TemperatureProbes
 from Scale import Scale
 
     
-con = ConductivityProbe(0, 9600)
+con = ConductivityProbe(0, 115200)
 con.openC()
 
 T = TemperatureProbes(1, 115200)
