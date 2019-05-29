@@ -57,30 +57,34 @@ for i = 1:rows
 end
 
 %Save last data point in interval
-%RE-DOOOO
-% for i = 1:length(condd)
-%     if (rem(i,interval)==0)
-%         cond(i/interval,1) = condd(i,1);
-%         wt(i/interval,1) = wtt(i,1);
-%         date(i/interval, 1) = datee(i,1);
-%         min(i/interval, 1) = minn(i,1);
-%         j(i/interval,1) = i;
-%     end
-% end
-% 
-% if rem(length(wt), interval) ~= 0
-%     e = rows - j(length(j));
-%     cond(length(cond) + 1, 1) = condd(length(condd), 1);
-%     wt(length(wt) + 1, 1) = wtt(length(wtt),1);
-%     date(length(date) + 1, 1) = date(length(date),1);
-%     min(length(min) + 1, 1) = minn(length(minn),1);
-% end
-wt = wtt;
-date = datee;
-min = minn;
-cond = condd;
-rows = length(wt);
+for i = 1:length(condd)
+    if (rem(i,interval)==0)
+        cond(i/interval,1) = condd(i,1);
+        wt(i/interval,1) = wtt(i,1);
+        date(i/interval, 1) = datee(i,1);
+        min(i/interval, 1) = minn(i,1);
+        hr(i/interval, 1) = hour(i,1);
+        secc(i/interval, 1) = sec(i,1);
+        j(i/interval,1) = i;
+    end
+end
 
+if rem(length(wt), interval) ~= 0
+    e = rows - j(length(j));
+    cond(length(cond) + 1, 1) = condd(length(condd), 1);
+    wt(length(wt) + 1, 1) = wtt(length(wtt),1);
+    date(length(date) + 1, 1) = date(length(date),1);
+    min(length(min) + 1, 1) = minn(length(minn),1);
+    hr(length(min) + 1, 1) = hour(length(minn),1);
+    secc(length(min) + 1, 1) = sec(length(minn),1);
+end
+% wt = wtt;
+% date = datee;
+% min = minn;
+% cond = condd;
+% rows = length(wt);
+
+rows = length(wt);
 %Initialize other variables
 DistillateWeight_L = wt/1000;                            %Convert distillate weight in liters
 a = 0.039;                                          %Area of small cell, m^2
@@ -95,17 +99,23 @@ RecoveryPercent = zeros(rows, 1);
 for i = 1:length(wt)                              %Initialize for loop.
     %If i = 0, everything is 0, but we already allocated arrays of zeroes, so nothing happens
     if i ~= 1
-        %Get difference in time in minutes and hours         
-        deltat_min(i, 1) = min(i,1) - min(i-1,1);   %Get difference in minutes, Set array at that point to minutes between the two times
+        %Get difference in time in minutes and hours
+        m1 = min(i-1);
+        m2 = min(i);
+        if m1 > m2
+            deltat_min(i, 1) = m2 + (60-m1);
+        else
+            deltat_min(i, 1) = m2-m1;   %Get difference in minutes, Set array at that point to minutes between the two times
+        end
         deltat_hrs(i,1) = deltat_min(i,1)/60;       %Convert to hours
         %Get water flux for each data point
            if deltat_hrs(i,1) == 0                         %If deltat_hrs is 0, flux is zero.
                 WaterFlux(i,1) = 0;
            else                                     %If deltat_hrs isn't 0
                 WaterFlux(i,1) = ((DistillateWeight_L(i,1)-(DistillateWeight_L(i-1,1))))/((deltat_hrs(i,1))*a);       %subtract from one before it, bc it exists   
-                fprintf("Water Flux == %f.\n", WaterFlux(i,1))
-                fprintf("Dif in time = %f.\n", (deltat_hrs(i,1)))
-                fprintf("")
+                %fprintf("Water Flux == %f.\n", WaterFlux(i,1))
+                %fprintf("Dif in time = %f.\n", (deltat_hrs(i,1)))
+                %fprintf("")
            end      %End if-else statement
            %End if-else statement
     end
