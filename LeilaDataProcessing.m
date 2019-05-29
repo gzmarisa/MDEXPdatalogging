@@ -20,12 +20,12 @@ for i = 1:rows-1
             data.data(i-1,:) = [];                  %delete row above it in data matrix
             dN(i,:) = [];                           %delete same row in dN
             dN(i-1,:) = [];                         %delet row above it in dN
-            %rows = rows-2;                          %subtract 2 from number of rows
+            rows = rows-2;                          %subtract 2 from number of rows
             
         elseif dN(i,j)== 1 || data.data(i,2) < 0    %if any element ==NaN
             data.data(i,:) = [];                    %delete row in data matrix
             dN(i,:) = [];                           %delete row in dN
-            %rows = rows-1;                          %subtract 1 from number of rows
+            rows = rows-1;                          %subtract 1 from number of rows
         end
     end 
     if i>=rows                                       %If the index on the loop is greater than the # of rows
@@ -115,9 +115,9 @@ end                 %End for loop
 
 
 for i= 2:length(wt)
-    TimeElapsed_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
+    deltat_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
 end 
-
+TimeElapsed_hrs=deltat_hrs;
 %FIGURE OUT HOW TO GET BACK TO EXCEL ON PC
 %l = string(length(DistillateConductivity_uS));
 %deltat_minR = strcat('D2:D', l);
