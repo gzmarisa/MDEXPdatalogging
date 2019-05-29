@@ -116,7 +116,6 @@ for i= 2:length(wt)
 end 
 
 TimeElapsed_hrs=deltat_hrs;
-
 %FIGURE OUT HOW TO GET BACK TO EXCEL ON PC
 %l = string(length(DistillateConductivity_uS));
 %deltat_minR = strcat('D2:D', l);
