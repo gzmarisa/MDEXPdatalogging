@@ -91,17 +91,18 @@ RecoveryPercent = zeros(rows, 1);
 for i = 1:length(wt)                              %Initialize for loop.
     %If i = 0, everything is 0, but we already allocated arrays of zeroes, so nothing happens
     if i ~= 1
-        %Get difference in time in minutes and hours
-                         
+        %Get difference in time in minutes and hours         
         deltat_min(i, 1) = min(i,1) - min(i-1,1);   %Get difference in minutes, Set array at that point to minutes between the two times
         deltat_hrs(i,1) = deltat_min(i,1)/60;       %Convert to hours
-   
-        
+        Elapsedtime_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
         %Get water flux for each data point
            if deltat_hrs(i,1) == 0                         %If deltat_hrs is 0, flux is zero.
                 WaterFlux(i,1) = 0;
            else                                     %If deltat_hrs isn't 0
                 WaterFlux(i,1) = ((DistillateWeight_L(i,1)-(DistillateWeight_L(i-1,1))))/((deltat_hrs(i,1) - deltat_hrs(i-1,1))*a);       %subtract from one before it, bc it exists   
+                fprintf("Water Flux == %f.\n", WaterFlux(i,1))
+                fprintf("Dif in time = %f.\n", (deltat_hrs(i,1)))
+                fprintf("")
            end      %End if-else statement
            %End if-else statement
     end
@@ -116,6 +117,7 @@ for i= 2:length(wt)
 end 
 
 TimeElapsed_hrs=deltat_hrs;
+
 %FIGURE OUT HOW TO GET BACK TO EXCEL ON PC
 %l = string(length(DistillateConductivity_uS));
 %deltat_minR = strcat('D2:D', l);
