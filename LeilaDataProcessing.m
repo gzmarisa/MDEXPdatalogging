@@ -28,17 +28,19 @@ for i = 1:rows-1
             %rows = rows-1;                          %subtract 1 from number of rows
         end
     end 
-    if i>=rows                                       %
-        break                                        %
+    if i>=rows                                       %If the index on the loop is greater than the # of rows
+        break                                        %break loop
     end
 end
 
+%Converting the data matrix into the individual arrays for each piece of data
 condd = data.data(:, 1);  wtt = data.data(:, 2);    
 T1 = data.data(:, 3);    T2 = data.data(:, 4);    T3 = data.data(:, 5);    T4 = data.data(:, 6);
 mon = data.data(:, 7);   day = data.data(:, 8);   hour = data.data(:,9);   minn = data.data(:,10);   sec = data.data(:,11); Y = 2019*ones(rows,1,'int16');
+%convert the time to integers
 mon= uint16(mon); day= uint16(day); hour= uint16(hour); minn=uint16(minn); sec=uint16(sec); 
+datee = datetime(Y, mon, day, hour, minn, sec);                                %Make date array
 inW = input('What is the initial volume of the tank (L)?    ');                %to get initial volume of tank
-datee = datetime(Y, mon, day, hour, minn, sec);
 
 % Adds weights to previous value if previous is larger 
 diff= 0;
@@ -54,6 +56,8 @@ for i = 1:rows
      end
 end
 
+%Save last data point in interval
+%RE-DOOOO
 for i = 1:length(condd)
     if (rem(i,interval)==0)
         cond(i/interval,1) = condd(i,1);
@@ -82,10 +86,6 @@ deltat_hrs = zeros(rows, 1);                        %zeroes of the length of the
 TimeElapsed_hrs = zeros(rows, 1);                   %number of data points given.
 WaterFlux = zeros(rows, 1);  
 RecoveryPercent = zeros(rows, 1); 
-
-for i= 2:length(wt)
-    deltat_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
-end 
 
 %main loop
 for i = 1:length(wt)                              %Initialize for loop.
