@@ -57,10 +57,7 @@ end
 %}
 WVLNG(dN)=[];
 AbdOD(dN)=[];
-
-
-for i = length(WVLNG)-1
-
-    slopes(i)=(AbdOD(i+1)-AbdOD(i))/(WVLNG(i+1)-WVLNG(i))
+Ab=zeros(length(UVnums))
+for i = length(UVnums)
     
-end 
+        
