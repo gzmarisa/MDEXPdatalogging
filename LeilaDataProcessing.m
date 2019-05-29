@@ -3,33 +3,33 @@ clear, clc
 %Created By: Ciara Avelina Lugo
 %Modified By: Marquitos Lee
 
-%Importing data from EXCEL
+%Importing data from txt file
 file = input('What file would you like to import? Include ".txt"(macs)  ', 's');      %to get filename to import
 delimiter= '\t';
 headerlines= 1;
-data = importdata(file,delimiter,headerlines);
-[rows, cols] = size(data.data);
-interval = input('How many minutes do you want between each data point?   ');
+data = importdata(file,delimiter,headerlines);                                         %imports data
+[rows, cols] = size(data.data);                                                       %convert structure to matrix
+interval = input('How many minutes do you want between each data point?   ');         %gets interval
 
 %Delete rows that are not complete and gits ;) rid of Negative weight values 
-dN = isnan(data.data);
+dN = isnan(data.data);                          %returns 1 if it is NaN, 0 if not
 for i = 1:rows-1
     for j = 1:cols
-        if dN(i,2) == 1                                                     
-            data.data(i,:) = [];
-            data.data(i-1,:) = [];
-            dN(i,:) = [];
-            dN(i-1,:) = [];
-            rows = rows-2;
+        if dN(i,2) == 1                             %if second column == NaN                                                
+            data.data(i,:) = [];                    %delete that row in data matrix
+            data.data(i-1,:) = [];                  %delete row above it in data matrix
+            dN(i,:) = [];                           %delete same row in dN
+            dN(i-1,:) = [];                         %delet row above it in dN
+            %rows = rows-2;                          %subtract 2 from number of rows
             
-        elseif dN(i,j)== 1 || data.data(i,2) < 0
-            data.data(i,:) = [];           
-            dN(i,:) = [];          
-            rows = rows-1; 
+        elseif dN(i,j)== 1 || data.data(i,2) < 0    %if any element ==NaN
+            data.data(i,:) = [];                    %delete row in data matrix
+            dN(i,:) = [];                           %delete row in dN
+            %rows = rows-1;                          %subtract 1 from number of rows
         end
     end 
-    if i>=rows 
-        break
+    if i>=rows                                       %
+        break                                        %
     end
 end
 
@@ -133,13 +133,7 @@ if boo == "Y"
     %Below is table that will be in txt file
     T = table(Time, TimeElapsed_hrs, wt, DistillateWeight_L, cond, deltat_min, deltat_hrs, WaterFlux, RecoveryPercent);
     writetable(T,filen, 'Delimiter', '\t');        %write table into txt file
-%     fprintf(filen, 'There were %3d points removed, \n', j-1);
-%     for i = 1:(j-1)
-%        %h = datestr(datetime(rem(i,1), 'ConvertFrom', 'excel'), 'HH:MM');
-%        %rem(i,1) = h;
-%        %fprintf(filen, 'Those points are %d ', rem(i));  
-%     end
-    fclose(fileID);             %close file
+    %Instructions on how to export txt file in EXCEL
     fprintf('Note: to export txt file into EXCEL, follow these steps: \n');
     fprintf('1. Go to Data button on ribbon. \n')
     fprintf('2. Selext "From Text" on left side of the screen. \n');
@@ -150,36 +144,8 @@ if boo == "Y"
     fprintf('Youre done. Have a nice day! \n');
 end
 
+%start of graphs
 g = input('Do you want any graphs? Enter "Y" or "N"   ', 's');
-% st = input('Do you want outiers removed? ', 's');
-% 
-% 
-% if st == 'Y'
-%     %remove data points < | >.7 std from average
-%     stddev = input('How many standard deviations from the average do you want removed?(usually 0.7 is used)   ');
-%     %rem = zeros(10, 10);
-%     wfA = mean(WaterFlux);
-%     wfS = std(WaterFlux);
-%     j = 1;
-%     siz = length(wt);
-%     for i = siz:-1:2
-%         if (WaterFlux(i) < (wfA - stddev*wfS)) || (WaterFlux(i) > (wfA - stddev*wfS))
-%             %rem(j, 1:10) = [string(datestr(datetime(timeE(i), 'ConvertFrom', 'excel'), 'HH:MM')), TimeElapsed_hrs(i), wt(i), DistillateWeight_L(i), DistillateConductivity_ppm(i), cond(i) deltat_min(i), deltat_hrs(i), WaterFlux(i), RecoveryPercent(i)];
-%             date(i) = [];
-%             TimeElapsed_hrs(i) = [];
-%             deltat_min(i) = [];
-%             deltat_hrs(i) = [];
-%             wt(i) = [];
-%             DistillateWeight_L(i) = []; 
-%             cond(i) = [];
-%             WaterFlux(i) = [];
-%            RecoveryPercent(i) = [];
-%            j = j+1;
-%            siz = siz -1;
-%        end
-%     end
-% end
-
 if g == 'Y'
     f = input('Do you want them on one page or separate? Type "T" for together, "S" for separate.   ', 's');
     dotS = 6;
