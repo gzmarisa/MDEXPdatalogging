@@ -11,7 +11,7 @@ from Scale import Scale
 
 #def main():
     
-con = ConductivityProbe(0, 9600)
+con = ConductivityProbe(3, 115200)
 #Testing methods
 #con.whosmans()
 #con.helpme()
@@ -22,7 +22,7 @@ con.openC()
 #l = con.line()
 #+-print(l)
 
-T = TemperatureProbes(1, 115200)
+T = TemperatureProbes(2, 115200)
 #Testing methods
 #T.whosmans()
 #T.helpme()
@@ -33,7 +33,7 @@ T.openC()
 #l = T.line()
 #print(l)
 
-S = Scale(0, 19200)
+S = Scale(1, 19200)
 #Testing methods
 #S.whosmans()
 #S.helpme()
@@ -67,8 +67,11 @@ cond = []
 wt = []
 temp = []
 i = 0
-m = 0;
-time = ("Waiting for seconds to equal 0")
+m = float(0)
+e = 0
+dd = 0
+n = 0
+print("Waiting for seconds to equal 0")
 time = t.localtime(None).tm_sec
     #loop for making the code start when seconds = 0
 while(time != 0):
@@ -81,92 +84,54 @@ while(time != 0):
 print("Cond", "Weight","HotIn", "HotOut", "ColdIn","ColdOut","Month","Day","Hour","Minute","Second",sep='\t')
     #main()
     #initialize arrays
+print(t.localtime(None).tm_min)
+d = datetime.date.today()
+c = datetime.datetime.now()
+        #year = d.year
+        #Save date, time, conductivity, weight and temp outputs to arrays
+h = c.hour
+mi = c.minute
+sec = c.second
+day = d.day
+mo = d.month
+print("got month")
+conn=con.line()
+print("got conductivity")
+weight=S.line()
+print("got weight")
+temps=T.line()
+print("got temps")
+print(conn, weight, temps, mo, day, h, mi, sec, sep='\t')
+
 while (True):
         #print("I'm alive, I swear. Just don't ask me to complete a CAPTCHA")
         #Get current date and time
-    d = datetime.date.today()
-    c = datetime.datetime.now()
-<<<<<<< HEAD
-        #year = d.year
-        #Save date, time, conductivity, weight and temp outputs to arrays
-    m = c.minute
-
-    if i == 0:
-=======
-    h = c.hour
-    mi = c.minute
-    sec = c.second
-    da = d.day
-    mo = d.month
     
     #print("m % printInterval " + str(m % printInterval))
-    if (sec == 0) and (m % saveInterval == 0) and (c.microsecond < 1000):
-        #print("Case 1")
->>>>>>> e20031ae9a7428d7e3f342b4f4212c92c04382e0
-        month.append(d.month)
-        day.append(d.day)
-        hour.append(c.hour)
-        minute.append(c.minute)
-        second.append(c.second)
-        cond.append(con.line())
-        wt.append(S.line())
-        temp.append(T.line())
-        f=open(filename, "a+")
-        f.write(str(cond[i])  + "\t" + str(wt[i]) + "\t" + temp[i] + "\t" + str(month[i]) + "\t" + str(day[i]) + "\t" + str(hour[i]) + "\t" + str(minute[i]) + "\t" + str(second[i]) + "\n")
-        f.close()
-        print(cond[i], wt[i], temp[i], month[i], day[i], hour[i], minute[i], second[i], sep='\t')
-        
-    elif ((m/printInterval)==0) == True:
-        mon=d.month
-        day=d.day
-        hour=c.hour
-        minn=c.minute
-        sec=c.second
-        conn=con.line()
-        weight=S.line()
-        temps=T.line()
-        print(conn, weight, temps, minn, day, hour, minn, sec, sep='\t')
+        if (sec == 0) and (m % saveInterval == 0) and (c.microsecond < 1000):
+            #print("Case 1")
+            month.append(d.month)
+            day.append(d.day)
+            hour.append(c.hour)
+            minute.append(c.minute)
+            second.append(c.second)
+            cond.append(con.line())
+            wt.append(S.line())
+            temp.append(T.line())
+            f=open(filename, "a+")
+            f.write(str(cond[n])  + "\t" + str(wt[n]) + "\t" + temp[n] + "\t" + str(month[n]) + "\t" + str(day[n]) + "\t" + str(hour[n]) + "\t" + str(minute[n]) + "\t" + str(second[n]) + "\n")
+            f.close()
+            print(cond[n], wt[n], temp[n], month[n], day[n], hour[n], minute[n], second[n], sep='\t')
+            n = n+1
+            
+        elif (sec == 0) and (m % printInterval == 0) and (c.microsecond < 1000):
+            conn=con.line()
+            weight=S.line()
+            temps=T.line()
+            print(conn, weight, temps, mo, day, h, mi, sec, sep='\t')
 
-    elif (m/saveInterval)==0 == True:
-        month.append(d.month)
-        day.append(d.day)
-        hour.append(c.hour)
-        minute.append(c.minute)
-        second.append(c.second)
-        cond.append(con.line())
-        wt.append(S.line())
-        temp.append(T.line())
-        f=open(filename, "a+")
-        f.write(str(cond[i])  + "\t" + str(wt[i]) + "\t" + temp[i] + "\t" + str(month[i]) + "\t" + str(day[i]) + "\t" + str(hour[i]) + "\t" + str(minute[i]) + "\t" + str(second[i]) + "\n")
-        f.close() 
-        #print(second)
-        #if (i>=(interval-1)):
-            
-            #if(i>0):
-            #    averageCond = sum(cond) / float(len(cond))
-            #    #For average wt.
-            #    averageWT = sum(wt) / float(len(wt))
-                #averageTemp = sum(float(temp)) / float(len(temp))
-            #    print("Average Conductivity",averageCond, "Average Weight",averageWT, sep='\t')
-            #print(type(cond[i]))
-            #print(type(wt[i]))
-            #print(type(temp[i]))
-            #print(type(month[i]))
-            
-    else:
-        pass
-        t.sleep(1)
-        #if (hour[i] == 16) & (minute[i] == 0):
-        #    break
-        #elif (wt[i] == 1000):
-        #    break
-       # else:
-        
-        #print("Test: ",cond[i], wt[i], temp[i], month[i], day[i], hour[i], minute[i], second[i], sep='\t')
-    i = i +1
-        
-        #if(i>=interval):
-        #    i=0
-    #print("i is now " + str(i) + " time is " + str(c))
-    
-    #print("Still kickin")
+        else:
+            pass
+        if (sec == 0) and (c.microsecond < 100):
+            m = m+1
+

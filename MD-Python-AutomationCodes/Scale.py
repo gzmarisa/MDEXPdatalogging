@@ -76,20 +76,18 @@ class Scale:
         self.ser.open()
         print("yeet")
         print("Scale is connected to " + self.port)
-        self.ser.write("1A") #this is how you talk to scale (probably)
+        #self.ser.reset_input_buffer()
+        #self.ser.write_timeout(1.00) #this is how you talk to scale (probably)
         #new line character after the A (maybe)
         l = self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
         print("Successfully read a line from the serial port")
         print(l)
 
     def line(self):
-<<<<<<< HEAD
         return self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
-=======
         n = 0
         c = datetime.datetime.now()
         sec = c.second
         if (sec%5 == 0) and (c.microsecond < 100):
             n = self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
         return n
->>>>>>> e20031ae9a7428d7e3f342b4f4212c92c04382e0

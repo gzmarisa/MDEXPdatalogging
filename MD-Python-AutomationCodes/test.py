@@ -67,8 +67,8 @@ import serial
 ##    print(str(c), con.line(), S.line(), T.line(), sep='\t')
 ##    i = i+1
 ##    #t.sleep(1)
-port = "/dev/ttyUSB0"
-baud = 9600
+port = "/dev/ttyUSB1"
+baud = 19200
 ser = 0
 print("Trying " + port + " at " + str(baud) + " baud")
 ser = serial.Serial(
@@ -89,15 +89,25 @@ l = ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
 print("eiuyfghwealifuyh")
 #while not(ser.inWaiting()):  # Or: while ser.inWaiting():
 i = 0
+j = 0
 while i != 1200000:
     n = 0
     c = datetime.datetime.now()
     sec = c.second
+    m = 0
+    o = ""
     if (sec%5 == 0):    # and (c.microsecond < 100):
-        n = ser.readline()  #.strip().rpartition(b' g')[0].decode('utf-8')  #
-        print (ord(n))
+        n = ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
+        print(n)
+##        if len(n) != 0:
+##            o = ""
+##            while j != len(n)-1:
+##                m =  ord(n.index(j))
+##                o = str(m) + o
+##                j = j+1
         print("yeeee")
         print(sec)
+        print(o)
     else:
         n = n
     #print(n)
