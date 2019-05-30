@@ -1,8 +1,8 @@
 import serial
 
 class Scale:
-    def fprintf(stream, format_spec, *args):
-        stream.write(format_spec % args)
+    #def fprintf(stream, format_spec, *args):
+        #stream.write(format_spec % args)
     def __init__(self, n, baud):
         self.baud = baud
         #This will only work on this code
@@ -66,16 +66,18 @@ class Scale:
         except:
             print("couldn't create serial port")
             pass
-        #print("Closing...just in case")
+
+        print("Closing...just in case")
         self.ser.close()
-        #print("Opening again")
+        print("Opening again")
         self.ser.open()
-        #print("yeet")
-        print("Conductivity Probe is connected to " + self.port)
+        print("yeet")
+        print("Scale is connected to " + self.port)
+        self.ser.write("1A") #this is how you talk to scale (probably)
+        #new line character after the A (maybe)
         l = self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
-        #print("Successfully read a line from the serial port")
-        #print(l)
+        print("Successfully read a line from the serial port")
+        print(l)
 
     def line(self):
-        
         return self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
