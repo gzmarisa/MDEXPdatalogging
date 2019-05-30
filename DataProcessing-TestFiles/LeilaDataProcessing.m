@@ -3,42 +3,54 @@ clear, clc
 %Created By: Ciara Avelina Lugo
 %Modified By: Marquitos Lee
 
-%Importing data from EXCEL
+%Importing data from txt file
 file = input('What file would you like to import? Include ".txt"(macs)  ', 's');      %to get filename to import
 delimiter= '\t';
 headerlines= 1;
-data = importdata(file,delimiter,headerlines);
-[rows, cols] = size(data.data);
-interval = input('How many minutes do you want between each data point?   ');
+data = importdata(file,delimiter,headerlines);                                         %imports data
+[rows, cols] = size(data.data);                                                       %convert structure to matrix
+interval = input('How many minutes do you want between each data point?   ');         %gets interval
 
 %Delete rows that are not complete and gits ;) rid of Negative weight values 
-dN = isnan(data.data);
+dN = isnan(data.data);                          %returns 1 if it is NaN, 0 if not
 for i = 1:rows-1
     for j = 1:cols
-        if dN(i,2) == 1                                                     
-            data.data(i,:) = [];
-            data.data(i-1,:) = [];
-            dN(i,:) = [];
-            dN(i-1,:) = [];
-            rows = rows-2;
+        if dN(i,2) == 1                             %if second column == NaN                                                
+            data.data(i,:) = [];                    %delete that row in data matrix
+            data.data(i-1,:) = [];                  %delete row above it in data matrix
+            dN(i,:) = [];                           %delete same row in dN
+            dN(i-1,:) = [];                         %delet row above it in dN
+            rows = rows-2;                          %subtract 2 from number of rows
             
-        elseif dN(i,j)== 1 || data.data(i,2) < 0
-            data.data(i,:) = [];           
-            dN(i,:) = [];          
-            rows = rows-1; 
+        elseif dN(i,j)== 1 || data.data(i,2) < 0    %if any element ==NaN
+            data.data(i,:) = [];                    %delete row in data matrix
+            dN(i,:) = [];                           %delete row in dN
+            rows = rows-1;                          %subtract 1 from number of rows
         end
     end 
-    if i>=rows 
-        break
+    if i>=rows                                       %If the index on the loop is greater than the # of rows
+        break                                        %break loop
     end
 end
 
+for i = 2:rows
+    if (data.data(i,2) == 0) && (data.data(i-1,2) == data.data(i,2))
+        data.data(i,:) = [];
+        rows = rows-1;
+    end
+    if i>=rows                                       %If the index on the loop is greater than the # of rows
+        break                                        %break loop
+    end
+end
+
+%Converting the data matrix into the individual arrays for each piece of data
 condd = data.data(:, 1);  wtt = data.data(:, 2);    
 T1 = data.data(:, 3);    T2 = data.data(:, 4);    T3 = data.data(:, 5);    T4 = data.data(:, 6);
 mon = data.data(:, 7);   day = data.data(:, 8);   hour = data.data(:,9);   minn = data.data(:,10);   sec = data.data(:,11); Y = 2019*ones(rows,1,'int16');
+%convert the time to integers
 mon= uint16(mon); day= uint16(day); hour= uint16(hour); minn=uint16(minn); sec=uint16(sec); 
+datee = datetime(Y, mon, day, hour, minn, sec);                                %Make date array
 inW = input('What is the initial volume of the tank (L)?    ');                %to get initial volume of tank
-datee = datetime(Y, mon, day, hour, minn, sec);
 
 % Adds weights to previous value if previous is larger 
 diff= 0;
@@ -54,12 +66,15 @@ for i = 1:rows
      end
 end
 
+%Save last data point in interval
 for i = 1:length(condd)
     if (rem(i,interval)==0)
         cond(i/interval,1) = condd(i,1);
         wt(i/interval,1) = wtt(i,1);
         date(i/interval, 1) = datee(i,1);
         min(i/interval, 1) = minn(i,1);
+        hr(i/interval, 1) = hour(i,1);
+        secc(i/interval, 1) = sec(i,1);
         j(i/interval,1) = i;
     end
 end
@@ -70,9 +85,16 @@ if rem(length(wt), interval) ~= 0
     wt(length(wt) + 1, 1) = wtt(length(wtt),1);
     date(length(date) + 1, 1) = date(length(date),1);
     min(length(min) + 1, 1) = minn(length(minn),1);
+    hr(length(min) + 1, 1) = hour(length(minn),1);
+    secc(length(min) + 1, 1) = sec(length(minn),1);
 end
-rows = length(wt);
+% wt = wtt;
+% date = datee;
+% min = minn;
+% cond = condd;
+% rows = length(wt);
 
+rows = length(wt);
 %Initialize other variables
 DistillateWeight_L = wt/1000;                            %Convert distillate weight in liters
 a = 0.039;                                          %Area of small cell, m^2
@@ -83,25 +105,27 @@ TimeElapsed_hrs = zeros(rows, 1);                   %number of data points given
 WaterFlux = zeros(rows, 1);  
 RecoveryPercent = zeros(rows, 1); 
 
-for i= 2:length(wt)
-    deltat_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
-end 
-
 %main loop
 for i = 1:length(wt)                              %Initialize for loop.
     %If i = 0, everything is 0, but we already allocated arrays of zeroes, so nothing happens
     if i ~= 1
         %Get difference in time in minutes and hours
-                         
-        deltat_min(i, 1) = min(i,1) - min(i-1,1);   %Get difference in minutes, Set array at that point to minutes between the two times
+        m1 = min(i-1);
+        m2 = min(i);
+        if m1 > m2
+            deltat_min(i, 1) = m2 + (60-m1);
+        else
+            deltat_min(i, 1) = m2-m1;   %Get difference in minutes, Set array at that point to minutes between the two times
+        end
         deltat_hrs(i,1) = deltat_min(i,1)/60;       %Convert to hours
-   
-        
         %Get water flux for each data point
            if deltat_hrs(i,1) == 0                         %If deltat_hrs is 0, flux is zero.
                 WaterFlux(i,1) = 0;
            else                                     %If deltat_hrs isn't 0
-                WaterFlux(i,1) = ((DistillateWeight_L(i,1)-(DistillateWeight_L(i-1,1))))/((deltat_hrs(i,1) - deltat_hrs(i-1,1))*a);       %subtract from one before it, bc it exists   
+                WaterFlux(i,1) = ((DistillateWeight_L(i,1)-(DistillateWeight_L(i-1,1))))/((deltat_hrs(i,1))*a);       %subtract from one before it, bc it exists   
+                %fprintf("Water Flux == %f.\n", WaterFlux(i,1))
+                %fprintf("Dif in time = %f.\n", (deltat_hrs(i,1)))
+                %fprintf("")
            end      %End if-else statement
            %End if-else statement
     end
@@ -110,13 +134,12 @@ for i = 1:length(wt)                              %Initialize for loop.
     RecoveryPercent(i,1) = 100*(1 - ((inW - DistillateWeight_L(i,1))/inW));    %Since nothing is being subtracted from something before it or a possible 0, it doesn't need to have a condition
 end                 %End for loop
 
-
-
-
-
+TimeElapsed_hrs(1,1) = 0;
 for i= 2:length(wt)
-    TimeElapsed_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
+    deltat_hrs(i,1) = deltat_hrs(i,1) + deltat_hrs(i-1,1);
 end 
+
+TimeElapsed_hrs=deltat_hrs;
 
 %FIGURE OUT HOW TO GET BACK TO EXCEL ON PC
 %l = string(length(DistillateConductivity_uS));
@@ -133,13 +156,7 @@ if boo == "Y"
     %Below is table that will be in txt file
     T = table(Time, TimeElapsed_hrs, wt, DistillateWeight_L, cond, deltat_min, deltat_hrs, WaterFlux, RecoveryPercent);
     writetable(T,filen, 'Delimiter', '\t');        %write table into txt file
-%     fprintf(filen, 'There were %3d points removed, \n', j-1);
-%     for i = 1:(j-1)
-%        %h = datestr(datetime(rem(i,1), 'ConvertFrom', 'excel'), 'HH:MM');
-%        %rem(i,1) = h;
-%        %fprintf(filen, 'Those points are %d ', rem(i));  
-%     end
-    fclose(fileID);             %close file
+    %Instructions on how to export txt file in EXCEL
     fprintf('Note: to export txt file into EXCEL, follow these steps: \n');
     fprintf('1. Go to Data button on ribbon. \n')
     fprintf('2. Selext "From Text" on left side of the screen. \n');
@@ -150,36 +167,8 @@ if boo == "Y"
     fprintf('Youre done. Have a nice day! \n');
 end
 
+%start of graphs
 g = input('Do you want any graphs? Enter "Y" or "N"   ', 's');
-% st = input('Do you want outiers removed? ', 's');
-% 
-% 
-% if st == 'Y'
-%     %remove data points < | >.7 std from average
-%     stddev = input('How many standard deviations from the average do you want removed?(usually 0.7 is used)   ');
-%     %rem = zeros(10, 10);
-%     wfA = mean(WaterFlux);
-%     wfS = std(WaterFlux);
-%     j = 1;
-%     siz = length(wt);
-%     for i = siz:-1:2
-%         if (WaterFlux(i) < (wfA - stddev*wfS)) || (WaterFlux(i) > (wfA - stddev*wfS))
-%             %rem(j, 1:10) = [string(datestr(datetime(timeE(i), 'ConvertFrom', 'excel'), 'HH:MM')), TimeElapsed_hrs(i), wt(i), DistillateWeight_L(i), DistillateConductivity_ppm(i), cond(i) deltat_min(i), deltat_hrs(i), WaterFlux(i), RecoveryPercent(i)];
-%             date(i) = [];
-%             TimeElapsed_hrs(i) = [];
-%             deltat_min(i) = [];
-%             deltat_hrs(i) = [];
-%             wt(i) = [];
-%             DistillateWeight_L(i) = []; 
-%             cond(i) = [];
-%             WaterFlux(i) = [];
-%            RecoveryPercent(i) = [];
-%            j = j+1;
-%            siz = siz -1;
-%        end
-%     end
-% end
-
 if g == 'Y'
     f = input('Do you want them on one page or separate? Type "T" for together, "S" for separate.   ', 's');
     dotS = 6;
