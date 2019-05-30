@@ -84,6 +84,8 @@ class Scale:
         print(l)
 
     def line(self):
+        # Flush input buffer
+        self.ser.flushInput()
         return self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
         n = 0
         c = datetime.datetime.now()
