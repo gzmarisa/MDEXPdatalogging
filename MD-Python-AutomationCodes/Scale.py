@@ -1,4 +1,7 @@
 import serial
+import sys
+import time as t
+import datetime
 
 class Scale:
     def fprintf(stream, format_spec, *args):
@@ -77,5 +80,9 @@ class Scale:
         #print(l)
 
     def line(self):
-        
-        return self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
+        n = 0
+        c = datetime.datetime.now()
+        sec = c.second
+        if (sec%5 == 0) and (c.microsecond < 100):
+            n = self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
+        return n

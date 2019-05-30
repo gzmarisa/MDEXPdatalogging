@@ -80,6 +80,7 @@ while (True):
     sec = c.second
     da = d.day
     mo = d.month
+    
     #print("m % printInterval " + str(m % printInterval))
     if (sec == 0) and (m % saveInterval == 0) and (c.microsecond < 1000):
         #print("Case 1")
