@@ -86,11 +86,23 @@ while (True):
         #Get current date and time
     d = datetime.date.today()
     c = datetime.datetime.now()
+<<<<<<< HEAD
         #year = d.year
         #Save date, time, conductivity, weight and temp outputs to arrays
     m = c.minute
 
     if i == 0:
+=======
+    h = c.hour
+    mi = c.minute
+    sec = c.second
+    da = d.day
+    mo = d.month
+    
+    #print("m % printInterval " + str(m % printInterval))
+    if (sec == 0) and (m % saveInterval == 0) and (c.microsecond < 1000):
+        #print("Case 1")
+>>>>>>> e20031ae9a7428d7e3f342b4f4212c92c04382e0
         month.append(d.month)
         day.append(d.day)
         hour.append(c.hour)

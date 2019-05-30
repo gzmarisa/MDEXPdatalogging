@@ -86,8 +86,22 @@ ser.open()
 print("yeet")
 print("Conductivity Probe is connected to " + port)
 l = ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
-    
-while (ser.inWaiting()):  # Or: while ser.inWaiting():
-    print (ser.readline().strip().rpartition(b' g')[0].decode('utf-8'))
-    print("help")
+print("eiuyfghwealifuyh")
+#while not(ser.inWaiting()):  # Or: while ser.inWaiting():
+i = 0
+while i != 1200000:
+    n = 0
+    c = datetime.datetime.now()
+    sec = c.second
+    if (sec%5 == 0):    # and (c.microsecond < 100):
+        n = ser.readline()  #.strip().rpartition(b' g')[0].decode('utf-8')  #
+        print (ord(n))
+        print("yeeee")
+        print(sec)
+    else:
+        n = n
+    #print(n)
+    #print("help")
+    i = i+1
+    #print(i)
 

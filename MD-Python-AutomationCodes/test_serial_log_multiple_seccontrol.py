@@ -6,7 +6,7 @@ import datetime
 
 #opens serial port for conductivity probe
 #print("Trying ACM0")
-ser1 = serial.Serial('/dev/ttyACM2',9600)
+ser1 = serial.Serial('/dev/ttyACM0',115200)
 #print("Connected to ACM2")
 #print("Closing Ser1 just in case")
 ser1.close()
@@ -38,13 +38,14 @@ def main():
     while(time != 0):
         time = t.localtime(None).tm_sec
         #print("can you wait?")
-        
-    #print(t.localtime(None))
-    print("Conductivity,Weight,Temperature1,Temperature2,Temperature3,Temperature4,Year,Month,Day,Hour,Minute,Second")
+        #print(t.localtime(None))
 
+print("Cond\tWeight\tHotIn\tHotOut\tColdIn\tColdOut\tMonth\tDay\tHour\tMinute\tSecond\n")
+        
 main()
 while True:
     #print("I'm alive, I swear. Just don't ask me to complete a CAPTCHA")
+    
     d = datetime.date.today()
     c = datetime.datetime.now()
     year = d.year
@@ -56,7 +57,7 @@ while True:
     line1 = ser1.readline().strip().decode('utf-8')
     line2 = ser2.readline().strip().rpartition(b' g')[0].decode('utf-8')
     line3 = ser3.readline().strip().decode('utf-8')
-    print(line1,line2,line3,year,month,day,hour,minute,second,sep=',')
+    print(line1,line2,line3,year,month,day,hour,minute,second,sep='\t')
     #t.sleep(5)
         
     #print("Still kickin")
