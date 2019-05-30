@@ -33,6 +33,16 @@ for i = 1:rows-1
     end
 end
 
+for i = 2:rows
+    if (data.data(i,2) == 0) && (data.data(i-1,2) == data.data(i,2))
+        data.data(i,:) = [];
+        rows = rows-1;
+    end
+    if i>=rows                                       %If the index on the loop is greater than the # of rows
+        break                                        %break loop
+    end
+end
+
 %Converting the data matrix into the individual arrays for each piece of data
 condd = data.data(:, 1);  wtt = data.data(:, 2);    
 T1 = data.data(:, 3);    T2 = data.data(:, 4);    T3 = data.data(:, 5);    T4 = data.data(:, 6);
