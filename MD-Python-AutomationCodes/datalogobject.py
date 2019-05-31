@@ -4,6 +4,10 @@ from Scale import Scale
 import sys
 import time as t
 import datetime
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 class datalog:
     
@@ -95,8 +99,13 @@ class datalog:
                 f=open(self.filename, "a+")
                 f.write(str(conn)  + "\t" + str(weight) + "\t" + temps + "\t" + str(mo) + "\t" + str(dayy) + "\t" + str(h) + "\t" + str(mi) + "\t" + str(sec) + "\n")
                 f.close()
-                
-                
+                #self.finishup()
                 break
-        
-        
+            
+    def finishup(self, email):
+        #Want to call this in fuction above (getdata())
+        #Look at email test for help
+        #this should send an email to person inputted to tell them that
+        #the experiment is over
+                
+
