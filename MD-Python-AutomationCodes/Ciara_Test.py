@@ -6,51 +6,20 @@ from CProbe import ConductivityProbe
 from TProbes import TemperatureProbes
 from Scale import Scale
 
-#def fprintf(stream, format_spec, *args):
-    #stream.write(format_spec % args)
-
-#def main():
-    
 con = ConductivityProbe(1, 115200)
-#Testing methods
-#con.whosmans()
-#con.helpme()
-#con.changeB(80000)
-#con.changeP(1)
-#con.whosmans()
 con.openC()
-#l = con.line()
-#+-print(l)
 
 T = TemperatureProbes(0, 115200)
-#Testing methods
-#T.whosmans()
-#T.helpme()
-#T.changeB(80000)
-#T.changeP(0)
-#T.whosmans()
 T.openC()
-#l = T.line()
-#print(l)
 
 S = Scale(1, 19200)
-#Testing methods
-#S.whosmans()
-#S.helpme()
-#S.changeB(80000)
-#S.changeP(7)
-#S.whosmans()
 S.openC()
-#l = S.line()
-#print(l)
 
-printInterval = float(input("What interval (in minutes) would you like the data to be printed?"))
-#print(type(printInterval))
+printInterval = float(input("What interval (in minutes) would you like the data to be printed?   "))
+saveInterval = float(input("What interval (in minutes) would you like the data to be saved to a text file?   "))
+exitWeight = str(input("At what distillate weight would you like the program to end?   "))
 
-
-saveInterval = float(input("What interval (in minutes) would you like the data to be saved to a text file?"))
-
-filename = str(input("What would you like the file name to be?"))
+filename = str(input("What would you like the file name to be?   ")) + ".csv"
 f = open(filename, "w+")
 print("Opened file")
 f.write("Cond\tWeight\tHotIn\tHotOut\tColdIn\tColdOut\tMonth\tDay\tHour\tMinute\tSecond\n")
@@ -124,4 +93,6 @@ while (True):
             
         if (sec == 0) and (c.microsecond < 100):
             m = m+1
+        if (weight >= exitWeight):
+            break
 

@@ -70,18 +70,11 @@ class Scale:
             print("couldn't create serial port")
             pass
 
-        print("Closing...just in case")
         self.ser.close()
         print("Opening again")
         self.ser.open()
-        #print("yeet")
         print("Scale is connected to " + self.port)
-        #self.ser.reset_input_buffer()
-        #self.ser.write_timeout(1.00) #this is how you talk to scale (probably)
-        #new line character after the A (maybe)
         l = self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
-        #print("Successfully read a line from the serial port")
-        #print(l)
 
     def line(self):
         # Flush input buffer
