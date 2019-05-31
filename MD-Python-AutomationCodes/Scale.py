@@ -74,14 +74,14 @@ class Scale:
         self.ser.close()
         print("Opening again")
         self.ser.open()
-        print("yeet")
+        #print("yeet")
         print("Scale is connected to " + self.port)
         #self.ser.reset_input_buffer()
         #self.ser.write_timeout(1.00) #this is how you talk to scale (probably)
         #new line character after the A (maybe)
         l = self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
-        print("Successfully read a line from the serial port")
-        print(l)
+        #print("Successfully read a line from the serial port")
+        #print(l)
 
     def line(self):
         # Flush input buffer
@@ -95,5 +95,6 @@ class Scale:
         #return n
         self.ser.flushInput()
         return n
+    
     def flushh(self):
         self.ser.flushInput()

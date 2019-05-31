@@ -106,8 +106,8 @@ while i != 1200000:
 ##                o = str(m) + o
 ##                j = j+1
         print("yeeee")
-        print(sec)
-        print(o)
+        #print(sec)
+        #print(o)
     else:
         n = n
     #print(n)
