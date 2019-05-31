@@ -11,7 +11,7 @@ from Scale import Scale
 
 #def main():
     
-con = ConductivityProbe(3, 115200)
+con = ConductivityProbe(1, 115200)
 #Testing methods
 #con.whosmans()
 #con.helpme()
@@ -22,7 +22,7 @@ con.openC()
 #l = con.line()
 #+-print(l)
 
-T = TemperatureProbes(2, 115200)
+T = TemperatureProbes(0, 115200)
 #Testing methods
 #T.whosmans()
 #T.helpme()
@@ -84,7 +84,7 @@ while(time != 0):
 print("Cond", "Weight","HotIn", "HotOut", "ColdIn","ColdOut","Month","Day","Hour","Minute","Second",sep='\t')
     #main()
     #initialize arrays
-print(t.localtime(None).tm_min)
+#print(t.localtime(None).tm_min)
 d = datetime.date.today()
 c = datetime.datetime.now()
         #year = d.year
@@ -92,29 +92,38 @@ c = datetime.datetime.now()
 h = c.hour
 mi = c.minute
 sec = c.second
-day = d.day
+dayy = d.day
 mo = d.month
-print("got month")
+#print("got month")
 conn=con.line()
-print("got conductivity")
+#print("got conductivity")
 weight=S.line()
-print("got weight")
+#print("got weight")
 temps=T.line()
-print("got temps")
-print(conn, weight, temps, mo, day, h, mi, sec, sep='\t')
+#print("got temps")
+print(conn, weight, temps, mo, dayy, h, mi, sec, sep='\t')
 
 while (True):
         #print("I'm alive, I swear. Just don't ask me to complete a CAPTCHA")
         #Get current date and time
-    
+        d = datetime.date.today()
+        c = datetime.datetime.now()
+        #year = d.year
+        #Save date, time, conductivity, weight and temp outputs to arrays
+        h = c.hour
+        mi = c.minute
+        sec = c.second
+        dayy = d.day
+        mo = d.month
+        
     #print("m % printInterval " + str(m % printInterval))
         if (sec == 0) and (m % saveInterval == 0) and (c.microsecond < 1000):
             #print("Case 1")
-            month.append(d.month)
-            day.append(d.day)
-            hour.append(c.hour)
-            minute.append(c.minute)
-            second.append(c.second)
+            month.append(mo)
+            day.append(dayy)
+            hour.append(h)
+            minute.append(mi)
+            second.append(sec)
             cond.append(con.line())
             wt.append(S.line())
             temp.append(T.line())
@@ -123,15 +132,17 @@ while (True):
             f.close()
             print(cond[n], wt[n], temp[n], month[n], day[n], hour[n], minute[n], second[n], sep='\t')
             n = n+1
-            
+            S.flushh()
         elif (sec == 0) and (m % printInterval == 0) and (c.microsecond < 1000):
             conn=con.line()
             weight=S.line()
             temps=T.line()
-            print(conn, weight, temps, mo, day, h, mi, sec, sep='\t')
+            print(conn, weight, temps, mo, dayy, h, mi, sec, sep='\t')
+            S.flushh()
 
         else:
             pass
+            
         if (sec == 0) and (c.microsecond < 100):
             m = m+1
 
