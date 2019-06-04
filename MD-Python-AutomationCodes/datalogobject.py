@@ -102,10 +102,7 @@ class datalog:
                 #self.finishup()
                 break
             
-    def finishup(self, email):
-        #Want to call this in fuction above (getdata())
-        #Look at email test for help
-        #this should send an email to person inputted to tell them that
-        #the experiment is over
-                
-
+    #def finishup(self, email):
+        #Want to call this in fuction above (getdata()) 
+        #Look at email test for help 
+        #this should send an email to person inputted to tell them that 
