@@ -69,9 +69,15 @@ while (True):
         dayy = d.day
         mo = d.month
         if (c.microsecond < 1000):
-            temp = S.line()
-            if (temp!= weight and temp!="" and temp!=None):
-                weight=temp
+            tempC = con.line()
+            tempS = S.line()
+            tempT = T.line()
+            if (tempC!= conn and tempC!="" and tempC!=None):
+                conn = tempC
+            if (tempS!= weight and tempS!="" and tempS!=None):
+                weight = tempS
+            if (tempT!= temps and tempT!="" and tempT!=None):
+                temps = tempT     
         if (sec == 0) and (m % saveInterval == 0) and (c.microsecond < 1000):
             conn=con.line()
             temps=T.line()
