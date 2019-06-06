@@ -74,7 +74,7 @@ class Scale:
         print("Opening again")
         self.ser.open()
         print("Scale is connected to " + self.port)
-        l = self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
+        #l = self.ser.readline().strip().rpartition(b' g')[0].decode('utf-8')
 
     def line(self):
         # Flush input buffer
@@ -94,4 +94,10 @@ class Scale:
         self.ser.flushInput()
 
     def start(self):
-        self.ser.write('1P/r/n'.encode('utf-8'))
+        self.ser.write('1P\r\n'.encode('utf-8'))
+        
+    def getLineIfAvailable(self):
+        if self.ser.in_waiting:
+            line = self.ser.readline().decode('utf-8')
+            return line
+        return None

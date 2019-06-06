@@ -70,4 +70,10 @@ class TemperatureProbes:
         #print(l)
         
     def line(self):
-        return self.ser.readline().strip().decode('utf-8')
+         n = self.ser.readline().strip().decode('utf-8')
+         self.ser.flushInput()
+         return n
+    
+    def flushh(self):
+        self.ser.flushInput()
+

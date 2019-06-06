@@ -86,6 +86,8 @@ class datalog:
                 temps=self.T.line()
                 print(conn, weight, temps, mo, dayy, h, mi, sec, sep='\t')
                 self.S.flushh()
+                self.con.flushh()
+                self.T.flushh()
 
             else:
                 pass

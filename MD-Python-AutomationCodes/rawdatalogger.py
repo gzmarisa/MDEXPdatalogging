@@ -15,17 +15,19 @@ T.openC()
 S = Scale(0, 19200)
 S.openC()
 
-printInterval = float(input("What interval (in minutes) would you like the data to be printed?   "))
-saveInterval = float(input("What interval (in minutes) would you like the data to be saved to a text file?   "))
+
 exitWeight = str(input("At what distillate weight would you like the program to end?   "))
 
 filename = str(input("What would you like the file name to be?   ")) + ".csv"
 f = open(filename, "w+")
 print("Opened file")
-f.write("Cond\tWeight\tHotIn\tHotOut\tColdIn\tColdOut\tMonth\tDay\tHour\tMinute\tSecond\n")
-print("saved first line to file")
+f.write("DISCLAIMER: This software is experimental. Use at your own risk. Sensor data is NOT synchronized.\n")
+print("DISCLAIMER: This software is experimental. Use at your own risk. Sensor data is NOT synchronized.\n")
 f.close()
 print("Closed file")
+
+# Tell the scale to start sending stuff once per second.
+S.start()
 
 month = []
 day = []
@@ -41,19 +43,10 @@ e = 0
 dd = 0
 n = 0
 
-print("Waiting for seconds to equal 0")
-time = t.localtime(None).tm_sec
-while(time != 0):
-    time = t.localtime(None).tm_sec            
 
-print("Cond", "Weight","HotIn", "HotOut", "ColdIn","ColdOut","Month","Day","Hour","Minute","Second",sep='\t')
 d = datetime.date.today()
 c = datetime.datetime.now()
-h = c.hour
-mi = c.minute
-sec = c.second
-dayy = d.day
-mo = d.month
+
 conn=con.line()
 weight=S.line()
 temps=T.line()

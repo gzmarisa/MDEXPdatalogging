@@ -1,7 +1,6 @@
 import serial
 
-class ConductivityProbe:
-    
+class TemperatureProbes:        
     def __init__(self, n, baud):
         self.baud = baud
         if (n==0):
@@ -16,15 +15,13 @@ class ConductivityProbe:
             print("Invalid ending")
             exit
         
-
      #Prints Port name and Baud rate, in case you forgot
     def whosmans(self):
-        print("C Port name is " + self.port)
-        print("C Baud Rate is " + str(self.baud))
+        print("T Port name is " + self.port)
+        print("T Baud Rate is " + str(self.baud))
 
     #Prints method names and description
     def helpme(self):
-        # Define these inside the class, but outside the function for maximum efficiency
         methods = ["whosmans", "changeP ", "changeB ", "openC   ", "line    "]
         inputs = ["N/A              ", "N/A              ", "New Baud Rate (int)", "N/A              ", "N/A              ",]
         desc = ["Output port name and baud rate.", "Change port name", "Change baud rate", "Open serial port for probe", "Gets serial output data"]
@@ -50,7 +47,7 @@ class ConductivityProbe:
     def changeB(self, Nbaud):
         self.baud = Nbaud
 
-    #opens serial port for conductivity probe
+    #opens serial port for Temperature Probes
     def openC(self):
         print("Trying " + self.port + " at " + str(self.baud) + " baud")
         try:
@@ -73,12 +70,15 @@ class ConductivityProbe:
         #print(l)
         
     def line(self):
-        n = self.ser.readline().strip().decode('utf-8')
-        self.ser.flushInput()
-        return n
-
+         n = self.ser.readline().strip().decode('utf-8')
+         self.ser.flushInput()
+         return n
+    
     def flushh(self):
         self.ser.flushInput()
-            
-        
-        
+
+    def getLineIfAvailable(self):
+        if self.ser.in_waiting:
+            line = self.ser.readline().decode('utf-8')
+            return line
+        return None

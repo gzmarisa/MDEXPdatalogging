@@ -72,10 +72,11 @@ class ConductivityProbe:
         #print("Successfully read a line from the serial port")
         #print(l)
         
-    def line(self):
-        n = self.ser.readline().strip().decode('utf-8')
-        self.ser.flushInput()
-        return n
+    def getLineIfAvailable(self):
+        if self.ser.in_waiting:
+            line = self.ser.readline().decode('utf-8')
+            return line
+        return None
 
     def flushh(self):
         self.ser.flushInput()
