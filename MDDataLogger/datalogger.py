@@ -93,3 +93,5 @@ while (True):
     print('\n')
     fileScale.flush()
     fileScale.close()
+
+    
