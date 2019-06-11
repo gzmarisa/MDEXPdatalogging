@@ -65,17 +65,20 @@ class TemperatureProbes:
         self.ser.open()
         #print("yeet")
         print("Conductivity Probe is connected to " + self.port)
-        l = self.ser.readline().strip().decode('utf-8')
+        #l = self.ser.readline().strip().decode('utf-8')
         #print("Successfully read a line from the serial port")
         #print(l)
         
-    def line(self):
-         n = self.ser.readline().strip().decode('utf-8')
-         self.ser.flushInput()
-         return n
+   # def line(self):
+         #n = self.ser.readline().strip().decode('utf-8')
+         #self.ser.flushInput()
+         #return n
     
-    def flushh(self):
-        self.ser.flushInput()
+    #def flushh(self):
+       # self.ser.flushInput()
+
+    #def start(self):
+        #self.ser.write('
 
     def getLineIfAvailable(self):
         if self.ser.in_waiting:

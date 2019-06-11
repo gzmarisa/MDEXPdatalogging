@@ -16,14 +16,33 @@ T.openC()
 S = Scale(0, 19200)
 S.openC()
 
-# Request File Name
-filename = str(input("What would you like the file name to be?   ")) + ".csv"
-file = open(filename, "w+")
-print("Opened file")
-file.write("DISCLAIMER: This software is experimental. Use at your own risk. Sensor data is NOT synchronized.\n")
-print("DISCLAIMER: This software is experimental. Use at your own risk. Sensor data is NOT synchronized.\n")
-file.close()
-print("Closed file")
+#Request File name for raw conductivty data
+filenameConductivity = str(input("What would you like the file name for the raw conductivity data to be?   ")) + ".csv"
+fileConductivity = open(filenameConductivity, "w+")
+print("Opened Conductivity file")
+fileScale.close()
+print("Closed Conductivity file")
+
+
+#Request File name for raw temperature data
+filenameTemperature = str(input("What would you like the file name for the raw temperature data to be?   ")) + ".csv"
+fileTemperature = open(filenameTemperature, "w+")
+print("Opened Temperature file")
+fileScale.close()
+print("Closed Temperature file")
+
+# Request File Name for raw scale data
+filenameScale = str(input("What would you like the file name for the raw scale data to be?   ")) + ".csv"
+fileScale = open(filenameScale, "w+")
+print("Opened Scale file")
+fileScale.close()
+print("Closed Scale file")
+
+#Create arrays for the different sensors 
+interval = 59
+conductivityArray = [None]*interval
+temperatureArray = [None]*interval
+scaleArray = [None]*interval
 
 # Tell the scale to start sending stuff once per second.
 S.start()
@@ -36,29 +55,41 @@ while (True):
 
     #Check for Temp Sensors, Conductivty Sensors, Scale
     tempC = C.getLineIfAvailable()
-    tempS = S.getLineIfAvailable()
     tempT = T.getLineIfAvailable()
+    tempS = S.getLineIfAvailable()
 
-    if (tempC is None) and (tempS is None) and (tempT is None):
-        sleep(0.5)    
+    if (tempC is None) and (tempT is None) and (tempS is None):
+        sleep(0.05)    
         continue
 
-    file = open(filename, "a+")
-    # TODO: 
+    #file = open(filename, "a+")
+    #open the raw data files 
+    fileConductivity = open(filenameConductivity, "a+")
+    fileTemperature = open(filenameTemperature, "a+")
+    fileScale = open(filenameScale, "a+")
+    
     print(currentDateTime, end='\n')
-    file.write(str(currentDateTime)+'\n')
+    fileConductivity.write(str(currentDateTime)+'\n')
+    fileTemperature.write(str(currentDateTime)+'\n')
+    fileScale.write(str(currentDateTime)+'\n')
 
     if not (tempC is None):
-        print('C: ',tempC, sep='\t', end='')
-        file.write('C: ' + tempC)
-
-    if not (tempS is None):
-        print('S: ',tempS, sep='\t', end='')
-        file.write('S: ' + tempS)
+        print(tempC, sep='\t', end='')
+        fileConductivity.write(tempC)
+    print('\n')
+    fileConductivity.flush()
+    fileConductivity.close()   
 
     if not (tempT is None):
-        print('T: ',tempT, sep='\t', end='')
-        file.write('T: ' + tempT)
+        print(tempT, sep='\t', end='')
+        fileTemperature.write(tempT)
     print('\n')
-    file.flush()
-    file.close()
+    fileTemperature.flush()
+    fileTemperature.close()
+        
+    if not (tempS is None):
+        print(tempS, sep='\t', end='')
+        fileScale.write(tempS)    
+    print('\n')
+    fileScale.flush()
+    fileScale.close()
