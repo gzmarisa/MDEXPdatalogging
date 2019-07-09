@@ -5,13 +5,19 @@ class ConductivityProbe:
     def __init__(self, n, baud):
         self.baud = baud
         if (n==0):
-            self.port = '/dev/ttyACM0'
+            self.port = "COM0"
         elif (n==1):
-            self.port = '/dev/ttyACM1'
+            self.port = "COM1"
         elif (n==2):
-            self.port = '/dev/ttyACM2'
+            self.port = "COM2"
         elif (n==3):
-            self.port = '/dev/ttyACM3'
+            self.port = "COM3"
+        elif (n==4):
+            self.port = "COM4"
+        elif (n==5):
+            self.port = "COM5"
+        elif (n==6):
+            self.port = "COM6" 
         else:
             print("Invalid ending")
             exit
@@ -35,13 +41,19 @@ class ConductivityProbe:
     #Change port name
     def changeP(self, n):
         if (n==0):
-            self.port = '/dev/ttyACM0'
+            self.port = "COM0"
         elif (n==1):
-            self.port = '/dev/ttyACM1'
+            self.port = "COM1"
         elif (n==2):
-            self.port = '/dev/ttyACM2'
+            self.port = "COM2"
         elif (n==3):
-            self.port = '/dev/ttyACM3'
+            self.port = "COM3"
+        elif (n==4):
+            self.port = "COM4"
+        elif (n==5):
+            self.port = "COM5"
+        elif (n==6):
+            self.port = "COM6" 
         else:
             print("Invalid ending")
             exit

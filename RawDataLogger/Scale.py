@@ -14,13 +14,19 @@ class Scale:
 ##        else:
 ##            raise Exception('Invalid serial port ending: must be 1 or 2 digit integer')
         if (n==0):
-            self.port = "/dev/ttyUSB0"
+            self.port = "COM0"
         elif (n==1):
-            self.port = "/dev/ttyUSB1"
+            self.port = "COM1"
         elif (n==2):
-            self.port = "/dev/ttyUSB2"
+            self.port = "COM2"
         elif (n==3):
-            self.port = "/dev/ttyUSB3"
+            self.port = "COM3"
+        elif (n==4):
+            self.port = "COM4"
+        elif (n==5):
+            self.port = "COM5"
+        elif (n==6):
+            self.port = "COM6"   
         else:
             print("Invalid ending")
             exit
@@ -42,13 +48,19 @@ class Scale:
     #Change port name
     def changeP(self, n):
         if (n==0):
-            self.port = "/dev/ttyUSB0"
+            self.port = "COM0"
         elif (n==1):
-            self.port = "/dev/ttyUSB1"
+            self.port = "COM1"
         elif (n==2):
-            self.port = "/dev/ttyUSB2"
+            self.port = "COM2"
         elif (n==3):
-            self.port = "/dev/ttyUSB3"
+            self.port = "COM3"
+        elif (n==4):
+            self.port = "COM4"
+        elif (n==5):
+            self.port = "COM5"
+        elif (n==6):
+            self.port = "COM6"  
         else:
             print("Invalid ending")
             exit
