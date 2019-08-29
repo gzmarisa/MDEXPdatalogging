@@ -38,7 +38,7 @@ while (True):
     tempT = T.getLineIfAvailable()
 
     if (tempC is None) and (tempS is None) and (tempT is None):
-        sleep(0.5)    
+        sleep(0.05)    
         continue
 
     file = open(filename, "a+")

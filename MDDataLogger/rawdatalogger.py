@@ -7,13 +7,13 @@ from CProbe import ConductivityProbe
 from TProbes import TemperatureProbes
 from Scale import Scale
 
-C = ConductivityProbe(1, 115200)
+C = ConductivityProbe(6, 115200)
 C.openC()
 
-T = TemperatureProbes(0, 115200)
+T = TemperatureProbes(3, 115200)
 T.openC()
 
-S = Scale(0, 19200)
+S = Scale(4, 19200)
 S.openC()
 
 
