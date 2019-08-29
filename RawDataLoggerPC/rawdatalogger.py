@@ -18,7 +18,7 @@ T = TemperatureProbes(3, 115200)
 T.openC()
 
 
-
+count_filename = 'counts.log.txt'
 
 
 
@@ -79,7 +79,8 @@ try:
                 t_count += 1
                 
             print('\n')
-            
+        with open(count_filename, 'a+') as count_file:
+            count_file.write('Time,{},C,{},S,{},T,{}\n'.format(str(currentDateTime),c_count, s_count, t_count))
             
 except KeyboardInterrupt:
     pass
