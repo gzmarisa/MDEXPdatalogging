@@ -1,0 +1,4 @@
+Conductivity,Weight,Temperature1,Temperature2,Temperature3,Temperature4,Year,Month,Day,Hour,Minute,Second
+520.82,1.0,22.43,22.54,22.44,22.14,2019,4,19,14,27,0
+525.51,1.0,22.43,22.54,22.47,22.14,2019,4,19,14,27,2
+530.21,1.0,22.43,22.54,22.47,22.14,2019,4,19,14,27,7
